@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Perfil
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  
+  <ion-list>
+    
+    <h3>Dados do perfil</h3>
+
+    <ion-item>
+      <ion-label floating>E-mail</ion-label>
+      <ion-input type="text" value=""></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Nome</ion-label>
+      <ion-input type="text" value=""></ion-input>
+    </ion-item>
+
+
+    <h3>Preferências</h3>
+
+    <ion-item>
+      <ion-label>Permite sons</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Permite vibração</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Permite narração</ion-label>
+      <ion-checkbox></ion-checkbox>
+    </ion-item>
+
+
+    <h3>Bônus</h3>
+        
+    <ion-item>
+      <ion-label floating>Data do último bônus recebido</ion-label>
+      <ion-datetime displayFormat="DD/MM/YYYY hh:mm"></ion-datetime>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating>+5 segundos</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Elimina alternativa</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Referência bíblica</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <h3>Pontuação</h3>
+
+    <ion-item>
+      <ion-label floating>Pontuação</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>    
+
+    <ion-item>
+      <ion-label floating>Questões respondidas corretamente</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-grid style="display: inline-block; vertical-align: bottom;">
+    <ion-row>
+      <ion-col> <button ion-button block color="danger">Cancelar</button> </ion-col>
+      <ion-col> <button ion-button block color="default">Salvar</button> </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
