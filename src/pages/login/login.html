@@ -21,4 +21,18 @@
 
     <br><br>
     <button ion-button block (click)="doLogin()">Login</button>
+    <br>
+    <button ion-button block (click)="facebookLogin()">Login com o Facebook</button>
+
+    <ion-card *ngIf="userProfile">
+      <img [src]="userProfile.photoURL"/>
+      <ion-card-content>
+        <ion-card-title>
+          {{ userProfile.displayName }}
+        </ion-card-title>
+        <p>
+          The UID for this new user is {{userProfile.uid}} and the email is {{userProfile.email}}
+        </p>
+      </ion-card-content>
+    </ion-card>    
 </ion-content>
