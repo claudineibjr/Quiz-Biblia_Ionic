@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
 import { User } from '../../model/User';
-
+import { Question } from '../../model/Question';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 
 @Component({
@@ -11,11 +10,18 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 })
 export class HomePage {
 
-  users: FirebaseListObservable<any>;
+  questions: Array<Question> = [];
 
   constructor(public navCtrl: NavController, db: AngularFireDatabase) {
-    this.users = db.list('/usuario');
-    console.log("Carregou\n\n" + this.users + "\n");
+    let questions = db.list('/question');
+
+    questions.forEach(elements =>{
+      elements.forEach(element => {
+        console.log(element);
+        this.questions.push(element);
+      })
+    });
+    
   }
 
 }

@@ -6,4 +6,9 @@
 
 <ion-content padding>
   <h2>Welcome to Ionic!</h2>
+
+  <button ion-item *ngFor="let question of questions" style="font-size: 10pt;">
+    {{ question.question }}
+  </button>
+
 </ion-content>

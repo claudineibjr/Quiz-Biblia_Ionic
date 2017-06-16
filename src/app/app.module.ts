@@ -8,6 +8,7 @@ import { ProfilePage } from '../pages/profile/profile';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
+import { HelpPage } from '../pages/help/help';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -32,14 +33,15 @@ export const firebaseConfig = {
     ProfilePage,
     HomePage,
     TabsPage,
-    LoginPage
+    LoginPage,
+    HelpPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
-    AngularFireAuthModule, // imports firebase/auth, only needed for auth features    
+    AngularFireAuthModule // imports firebase/auth, only needed for auth features    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,7 +50,8 @@ export const firebaseConfig = {
     ProfilePage,
     HomePage,
     TabsPage,
-    LoginPage
+    LoginPage,
+    HelpPage
   ],
   providers: [
     StatusBar,
