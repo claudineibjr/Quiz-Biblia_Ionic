@@ -14,8 +14,8 @@ export class User{
     private preferences = new Preferences();
     private bonus = new Bonus();
 
-    constructor(){
-        
+    constructor(uid: string){
+        this.uid = uid;
     }
 
     public getEmail(){

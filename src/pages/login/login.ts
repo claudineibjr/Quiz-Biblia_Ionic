@@ -4,7 +4,7 @@ import { TabsPage } from '../tabs/tabs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
-//import firebase from 'firebase';
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-login',
@@ -18,10 +18,10 @@ export class LoginPage {
   userProfile: any = null;
 
   constructor(public navCtrl: NavController, public firebaseAuthentication: AngularFireAuth, public toastCtrl: ToastController, private facebook: Facebook) {
-
+    this.doLogin(); //DEBUG
   }
 
-  /*facebookLogin(){
+  facebookLogin(){
       this.facebook.login(['email']).then( (response) => {
           const facebookCredential = firebase.auth.FacebookAuthProvider
               .credential(response.authResponse.accessToken);
@@ -29,14 +29,34 @@ export class LoginPage {
           firebase.auth().signInWithCredential(facebookCredential)
           .then((success) => {
               console.log("Firebase success: " + JSON.stringify(success));
+
+              let toastMessage = this.toastCtrl.create({
+                        message: "Firebase success: " + JSON.stringify(success),
+                        duration: 3000
+                      });
+                
+              toastMessage.present();
+
               this.userProfile = success;
           })
           .catch((error) => {
               console.log("Firebase failure: " + JSON.stringify(error));
+              let toastMessage = this.toastCtrl.create({
+                        message: "Firebase failure: " + JSON.stringify(error),
+                        duration: 3000
+                      });  
+
+              toastMessage.present();
           });
 
-      }).catch((error) => { console.log(error) });
-  }*/
+      }).catch((error) => { 
+        console.log(error)
+        let toastMessage = this.toastCtrl.create({
+                  message: error,
+                  duration: 3000
+                });                      
+      });
+  }
 
   createUser(){
 
@@ -49,8 +69,9 @@ export class LoginPage {
   }
 
   doLogin(){
+    this.navCtrl.push(TabsPage);
 
-    this.firebaseAuthentication.auth.signInWithEmailAndPassword(this.email, this.password).then((success => {
+    /*this.firebaseAuthentication.auth.signInWithEmailAndPassword(this.email, this.password).then((success => {
       let toastMessage = this.toastCtrl.create({
                 message: success.message,
                 duration: 3000
@@ -66,10 +87,8 @@ export class LoginPage {
                     });
             
             toastMessage.present();
-    }));
+    }));*/
 
   }
-
-
-
+  
 }
