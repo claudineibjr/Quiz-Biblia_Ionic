@@ -6,13 +6,8 @@
 
 <ion-content padding>
   
-  <button style="margin-bottom: 2%;" ion-button color="light" (click) = "try(number)" *ngFor="let alternative of question.alternatives; let number = index;" block>
+  <button style="margin-bottom: 2%;" ion-button color="light" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;" block>
     {{alternative}}
   </button>
-
-  <!-- <button ng-hide="1 = 2" ion-button color="light" (click) = "try(0)" [(ngModel)] = "question.alternative_A" block>Alternativa A</button> -->
-  <!-- <button ng-hide="1 = 2" ion-button color="light" (click) = "try(1)" [(ngModel)] = "question.alternative_B" block>Alternativa B</button> -->
-  <!-- <button ng-hide="1 = 2" ion-button color="light" (click) = "try(2)" [(ngModel)] = "question.alternative_C" block>Alternativa C</button> -->
-  <!-- <button ng-hide="1 = 2" ion-button color="light" (click) = "try(3)" [(ngModel)] = "question.alternative_D" block>Alternativa D</button> -->
 
 </ion-content>
