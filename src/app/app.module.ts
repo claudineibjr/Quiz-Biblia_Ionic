@@ -5,7 +5,7 @@ import { MyApp } from './app.component';
 
 import { AboutPage } from '../pages/about/about';
 import { ProfilePage } from '../pages/profile/profile';
-import { HomePage } from '../pages/home/home';
+import { GamePage } from '../pages/game/game';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { HelpPage } from '../pages/help/help';
@@ -33,7 +33,7 @@ export const firebaseConfig = {
     MyApp,
     AboutPage,
     ProfilePage,
-    HomePage,
+    GamePage,
     TabsPage,
     LoginPage,
     HelpPage
@@ -50,7 +50,7 @@ export const firebaseConfig = {
     MyApp,
     AboutPage,
     ProfilePage,
-    HomePage,
+    GamePage,
     TabsPage,
     LoginPage,
     HelpPage
