@@ -19,6 +19,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 
 import { Facebook } from '@ionic-native/facebook'
 
+import { NativeAudio } from '@ionic-native/native-audio';
+
 // AF2 Settings
 export const firebaseConfig = {
   apiKey: "AIzaSyBCcwdOZ_AVVnyFxk4am2xTT3WvUJcEWN8",
@@ -59,6 +61,7 @@ export const firebaseConfig = {
     StatusBar,
     SplashScreen,
     Facebook,
+    NativeAudio,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

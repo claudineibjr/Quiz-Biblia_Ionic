@@ -5,6 +5,7 @@ import { Question } from '../../model/Question';
 import { Parameters } from '../../model/Parameters';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 @Component({
   selector: 'page-game',
@@ -17,7 +18,8 @@ export class GamePage {
   match: game.Match;
   time_Left_Question: number;
 
-  constructor(public navCtrl: NavController, public db: AngularFireDatabase, public alertCtrl: AlertController) {
+  constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
+                public alertCtrl: AlertController, public nativeAudio: NativeAudio) {
     // Seta a questão como nula, para que não dê erro, visto que é MVVM
     this.question = new Question(null, null, null, null, null, null, null, null, null);
     
@@ -107,7 +109,7 @@ export class GamePage {
       }      
     }
 
-    this.showAnswer(correct, this.question.getTextBiblical(), 0);
+    this.showAnswer(correct, this.question.getTextBiblical(), scoreTry);
 
     // Soma a pontuação obtida nesta tentativa à pontuação da partida
     this.match.score += scoreTry;
@@ -133,6 +135,15 @@ export class GamePage {
   playSound(correct: boolean){
 
     //
+    if (1 == 1){
+      if (correct){
+        this.nativeAudio.preloadSimple('correctAudio', '../../../resources/sound_correct_answer.mp3');
+        this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
+      }else{
+        this.nativeAudio.preloadSimple('correctAudio', '../../../resources/sound_wrong_answer.mp3');
+        this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
+      }
+    }
 
   }
   
