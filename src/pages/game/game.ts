@@ -30,6 +30,19 @@ export class GamePage {
     this.match = new game.Match();
 
     this.time_Left_Question = Parameters.TIME_QUESTION;
+
+    this.nativeAudio.preloadSimple('correctAudio', 'assets/sound/sound_correct_answer.mp3').then(mensagem => {
+        console.log(mensagem);
+      }, erro => {
+        console.log(erro);
+      });
+    
+      this.nativeAudio.preloadSimple('wrongAudio', 'assets/sound/sound_wrong_answer.mp3').then(mensagem => {
+        console.log(mensagem);
+      }, erro => {
+        console.log(erro);
+      });
+
   }
 
   try(selectedAlternative: number){ // Função acionada no fim da questão ou quando o usuário seleciona a opção
@@ -44,12 +57,18 @@ export class GamePage {
     // Insere uma nova resposta na partida
     this.match.answers.push(new game.Answer(correct, this.question.getLevelQuestion()));
 
+    // Reproduz som
     this.playSound(correct);
+
+    // Pinta a alternativa de acordo com a resposta correta ou não
     this.paintAlternative(correct, this.question.getAnswer(), selectedAlternative);
 
     if (correct){
       
+      // Soma a variável de acertos seguidos da partida
       this.match.hit++;
+      
+      // Caso a questão for difícil, soma a variável de acertos difíceis seguidos
       if (this.question.getLevelQuestion() == 3)
         this.match.hit_Hard++;
 
@@ -85,7 +104,10 @@ export class GamePage {
 
     }else{
       
+      // Zera a variável de acertos seguidos da partida
       this.match.hit = 0;
+
+      // Zera a variável de acertos difíceis seguidos da partida 
       if (this.question.getLevelQuestion() == 3)
           this.match.hit_Hard = 0;
 
@@ -109,22 +131,24 @@ export class GamePage {
       }      
     }
 
+    // Exibe a resposta na tela
     this.showAnswer(correct, this.question.getTextBiblical(), scoreTry);
 
     // Soma a pontuação obtida nesta tentativa à pontuação da partida
     this.match.score += scoreTry;
 
-    this.verifySequenceQuestions();        
+    // Verifica a sequência de acertos e dá os bônus caso necessário
+    this.verifySequenceQuestions();
 
   }
 
   showAnswer(correct: boolean, textBiblical: string, points: number){
-    
     // Exibe uma mensagem com a pontuação, o resultado da questão e texto bíblico
+
     let alert = this.alertCtrl.create({
       title: (correct ? 'Parabéns, você acertou!' : 'Que pena, você errou!'),
       subTitle: points + " pontos.",
-      message: textBiblical,
+      message: '<font color="black">' + textBiblical + '</font>',
       cssClass: (correct ? 'correct-answer' : 'wrong-answer'),
       buttons: ['Ok']
     });
@@ -133,21 +157,18 @@ export class GamePage {
   }
 
   playSound(correct: boolean){
-
-    //
-    if (1 == 1){
-      if (correct){
-        this.nativeAudio.preloadSimple('correctAudio', '../../../resources/sound_correct_answer.mp3');
-        this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
-      }else{
-        this.nativeAudio.preloadSimple('correctAudio', '../../../resources/sound_wrong_answer.mp3');
-        this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
-      }
+    // Reproduz som
+    if (correct){      
+      this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
+    }else{
+      this.nativeAudio.play('wrongAudio', () => console.log("Rodou"));
     }
 
   }
   
+
   paintAlternative(correct: boolean, answer: number, selectedAlternative: number){
+    // Pinta a alternativa de acordo com a resposta correta ou não
 
   }
 

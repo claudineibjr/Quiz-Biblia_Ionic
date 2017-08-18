@@ -3,9 +3,34 @@ page-game {
 }
 
 .correct-answer{
-    color: blue;
+    color: green;
 }
 
 .wrong-answer{
     color: red;
+}
+
+#container {
+  display: inline-block;
+  position: relative;
+  margin: 0px;
+  width: 100%;
+}
+
+#container figcaption {
+  position: absolute;
+  top: 0px;
+  color: black;
+  margin: 5px;
+  text-align: center;
+}
+
+#txtQuestion{
+    font-size: 20px;
+}
+
+#txtAlternative{
+    font-size: 16px;
+    width: 100%;
+    text-align: center;
 }
