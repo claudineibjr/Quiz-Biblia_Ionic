@@ -9,6 +9,7 @@ import { GamePage } from '../pages/game/game';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LoginPage } from '../pages/login/login';
 import { HelpPage } from '../pages/help/help';
+import { GameParametersPage } from '../pages/gameparameters/gameparameters';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -38,7 +39,8 @@ export const firebaseConfig = {
     GamePage,
     TabsPage,
     LoginPage,
-    HelpPage
+    HelpPage,
+    GameParametersPage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ export const firebaseConfig = {
     GamePage,
     TabsPage,
     LoginPage,
-    HelpPage
+    HelpPage,
+    GameParametersPage
   ],
   providers: [
     StatusBar,

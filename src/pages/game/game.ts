@@ -31,13 +31,14 @@ export class GamePage {
 
     this.time_Left_Question = Parameters.TIME_QUESTION;
 
+    //Prepara os áudios
     this.nativeAudio.preloadSimple('correctAudio', 'assets/sound/sound_correct_answer.mp3').then(mensagem => {
         console.log(mensagem);
       }, erro => {
         console.log(erro);
       });
     
-      this.nativeAudio.preloadSimple('wrongAudio', 'assets/sound/sound_wrong_answer.mp3').then(mensagem => {
+    this.nativeAudio.preloadSimple('wrongAudio', 'assets/sound/sound_wrong_answer.mp3').then(mensagem => {
         console.log(mensagem);
       }, erro => {
         console.log(erro);
