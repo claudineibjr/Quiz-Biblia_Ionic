@@ -2,6 +2,9 @@ page-game {
     
 }
 
+/* ------------------------------------------------------------------------ */
+/* Classes que exibirão as devidas cores indicando o acerto/erro da questão */
+/* ------------------------------------------------------------------------ */
 .correct-answer{
     color: green;
 }
@@ -10,27 +13,82 @@ page-game {
     color: red;
 }
 
-#container {
-  display: inline-block;
-  position: relative;
-  margin: 0px;
-  width: 100%;
+.alternative{
+    background-color: #efefef;
 }
 
-#container figcaption {
+.correct-alternative{
+    background-color: green;
+}
+
+.wrong-alternative{
+    background-color: red;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Classes que servem para a criação dos quadro com a questão/alternativa */
+/* ---------------------------------------------------------------------- */
+
+#containerQuestion, #containerAlternatives {
+    display: inline-block;
+    position: relative;
+    margin: 0px;
+    width: 100%;
+  }
+
+/* ---------------------------------------------------------- */
+/* Classes que servem para a criação do quadro com a questão */
+/* --------------------------------------------------------- */
+#frameQuestion{
+    width: 100%;
+    height: 150px;
+}
+
+/* --------------------------------------------------------------- */
+/* Classes que servem para a criação do quadro com as alternativas */
+/* --------------------------------------------------------------- */
+#frameAlternative{
+    width: 100%;
+    height: 70px;
+}
+
+#containerAlternatives{
+    margin-top: 5px;
+}
+
+/* ------------------------------------------------------------- */
+/* Classes utilizadas para definição dos textos exibidos na tela */
+/* ------------------------------------------------------------- */
+#txtQuestion, #txtAlternative, #txtLevelQuestion, #txtSectionQuestion {
   position: absolute;
   top: 0px;
   color: black;
-  margin: 5px;
+  margin: 8px;
   text-align: center;
 }
 
 #txtQuestion{
     font-size: 20px;
+    text-align: center;
 }
 
 #txtAlternative{
     font-size: 16px;
     width: 100%;
-    text-align: center;
+    height: 100%;
+}
+
+#txtLevelQuestion, #txtSectionQuestion{
+    width: 100%;
+    padding-right: 5%;
+    top: 77%;
+    font-size: 12px;
+}
+
+#txtLevelQuestion{
+    text-align: left;
+}
+
+#txtSectionQuestion{
+    text-align: right;
 }

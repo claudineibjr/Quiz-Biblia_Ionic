@@ -17,11 +17,17 @@ export class GamePage {
   question: Question;
   match: game.Match;
   time_Left_Question: number;
+  
+  image: Array<String> = [];
 
   constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio) {
+    
+    //Cria as alternativas em branco para que apareça o espaço em branco
+    let auxAlternatives: Array<String> = [];auxAlternatives.push("");auxAlternatives.push("");auxAlternatives.push("");auxAlternatives.push("");
+    
     // Seta a questão como nula, para que não dê erro, visto que é MVVM
-    this.question = new Question(null, null, null, null, null, null, null, null, null);
+    this.question = new Question(null, null, null, auxAlternatives, null, null, null, null, null);
     
     //Chama a função responsável por buscar a questão no banco de dados
     this.getQuestion();
@@ -31,13 +37,14 @@ export class GamePage {
 
     this.time_Left_Question = Parameters.TIME_QUESTION;
 
-    //Prepara os áudios
+    //Prepara o áudio para acertos
     this.nativeAudio.preloadSimple('correctAudio', 'assets/sound/sound_correct_answer.mp3').then(mensagem => {
         console.log(mensagem);
       }, erro => {
         console.log(erro);
       });
     
+    //Prepara o áudio para erros
     this.nativeAudio.preloadSimple('wrongAudio', 'assets/sound/sound_wrong_answer.mp3').then(mensagem => {
         console.log(mensagem);
       }, erro => {
@@ -46,8 +53,11 @@ export class GamePage {
 
   }
 
-  try(selectedAlternative: number){ // Função acionada no fim da questão ou quando o usuário seleciona a opção
+  try(selectedAlternative: number){
+    // Função acionada no fim da questão ou quando o usuário seleciona a opção
     
+    
+
     //Variável responsável por identificar se o usuário acertou ou errou
     let correct: boolean;
     correct = selectedAlternative == this.question.getAnswer();
@@ -151,8 +161,16 @@ export class GamePage {
       subTitle: points + " pontos.",
       message: '<font color="black">' + textBiblical + '</font>',
       cssClass: (correct ? 'correct-answer' : 'wrong-answer'),
-      buttons: ['Ok']
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.getQuestion();
+          }
+        }
+      ]
     });
+
     alert.present();
 
   }
@@ -164,16 +182,15 @@ export class GamePage {
     }else{
       this.nativeAudio.play('wrongAudio', () => console.log("Rodou"));
     }
-
   }
   
 
   paintAlternative(correct: boolean, answer: number, selectedAlternative: number){
     // Pinta a alternativa de acordo com a resposta correta ou não
-
   }
 
   getQuestion(){
+    //Função acionada ao buscar uma questão aleatória
 
     let questionNumber: number;
     questionNumber = this.aleatoryNumberQuestion();
@@ -215,7 +232,9 @@ export class GamePage {
   }
 
   aleatoryNumberQuestion(): number{
-    return 1;
+    
+    let maxNumberQuestion_Debug: number = 129;
+    return Math.floor(Math.random() * (maxNumberQuestion_Debug - 1)) + 1;
   }
 
   randomizeAlternatives(alternatives_and_answer: Array<Object>): Array<Object>{

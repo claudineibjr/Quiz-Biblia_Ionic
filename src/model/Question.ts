@@ -5,7 +5,7 @@ export class Question {
     private answer: number; /*0 - Alternativa A | 1 - Alternativa B | 2 - Alternativa C | 3 - Alternativa D*/
     private alternatives: Array<String>;
     private textBiblical: string;
-    private levelQuestion: number;
+    private levelQuestion: number;  /*1 - Fácil | 2 - Médio | 3 - Difícil */
     private testamento: string; /* Antigo | Novo */
     private secaoBiblia: string; /* Pentateuco | História 1 | Poesia | Profetas Maiores | Profetas Menores | Evangelhos | História 2 | Cartas | Profecia */
     private referenciaBiblica: string;
@@ -34,5 +34,16 @@ export class Question {
     public getLevelQuestion(): number{          return this.levelQuestion;  }
     public getTestamento(): string{             return this.testamento;     }
     public getReferenciaBiblica(): string{      return this.testamento;     }
+    public getSecaoBiblia(): string{            return this.secaoBiblia;    }
+    public getLevelQuestion_string(): string{
+        switch(this.levelQuestion){
+            case 1:
+                return 'Fácil';
+            case 2:
+                return 'Médio';
+            case 3:
+                return 'Difícil';
+        }
+    }
     
 }

@@ -6,13 +6,15 @@
 
 <ion-content padding style="background-color: #1669bb">
 
-  <figure id="container">
-    <img width=100% height=140px src="assets/img/quadro_questao.png" />  
+  <figure id="containerQuestion">
+    <img id="frameQuestion" src="assets/img/quadro_questao.png" />  
     <figcaption id="txtQuestion"><b>{{question.getQuestion()}}</b></figcaption>
+    <figcaption id="txtSectionQuestion">{{question.getSecaoBiblia()}}</figcaption>
+    <figcaption id="txtLevelQuestion">{{question.getLevelQuestion_string()}}</figcaption>
   </figure>
 
-  <figure id="container" style="margin-top: 5px;" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;">
-    <img width=100% height=60px src="assets/img/quadro_alternativa.png" />
+  <figure id="containerAlternatives" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;">
+    <img id="frameAlternative" [src]={{'assets/img/' + ima + '.png'}} />
     <figcaption id="txtAlternative">{{alternative}}</figcaption>
   </figure>
 
