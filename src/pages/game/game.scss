@@ -39,42 +39,65 @@ page-game {
 /* ---------------------------------------------------------- */
 /* Classes que servem para a criação do quadro com a questão */
 /* --------------------------------------------------------- */
+$frameQuestionHeight: 165px;
 #frameQuestion{
     width: 100%;
-    height: 150px;
+    height: $frameQuestionHeight;
 }
 
 /* --------------------------------------------------------------- */
 /* Classes que servem para a criação do quadro com as alternativas */
 /* --------------------------------------------------------------- */
-#frameAlternative{
+$frameAlternativeHeight: 65px;
+.frameAlternative{
     width: 100%;
-    height: 70px;
+    height: $frameAlternativeHeight;
 }
 
+$containerAlternativesMarginTop: 5px;
 #containerAlternatives{
-    margin-top: 5px;
+    margin-top: $containerAlternativesMarginTop;
 }
-
 /* ------------------------------------------------------------- */
 /*         Classes utilizadas para exibição do cronômetro        */
 /* ------------------------------------------------------------- */
 #containterStopWatch{
-    top: 2%;
-    position: relative;
-    text-align: center;
+    text-align: left;
+    position: absolute;
 }
 
 #stopWatchImage{
-    width:25%;
+    width: 25%;
+    margin-left: 0px;
 }
 
 #stopWatchTimer{
-    color: black;
     font-size: 18pt;
     position: absolute;
     top: 55%;
-    left: 50%;
+    left: 12.5%;
+    transform: translate(-50%, -50%);
+}
+
+/* ------------------------------------------------------------- */
+/*          Classes utilizadas para exibição da pontuação        */
+/* ------------------------------------------------------------- */
+#containterScore{
+    text-align: right;
+    position: absolute;
+}
+
+#scoreImage{
+    width:27.5%;
+}
+
+#scorePoints{
+    color:#832b00;
+    font-size: 18pt;
+    position: absolute;
+    left: 86.25%;
+    top: 20%;
+    text-align: center;
     transform: translate(-50%, -50%);
 }
 

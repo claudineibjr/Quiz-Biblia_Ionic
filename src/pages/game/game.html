@@ -14,13 +14,18 @@
   </figure>
 
   <figure id="containerAlternatives" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;">
-    <img id="frameAlternative" src="assets/img/quadro_alternativa.png"/>
+    <img class="frameAlternative" src="assets/img/quadro_alternativa.png"/>
     <figcaption id="txtAlternative">{{alternative}}</figcaption>
   </figure>
 
   <div id = "containterStopWatch">
-    <img id="stopWatchImage" src="assets/img/stopwatch.png"/>
-    <div id = "stopWatchTimer"><b>{{time_Left_Question}}</b></div>
+    <img id = "stopWatchImage" src="assets/img/stopwatch"/>
+    <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div>
+  </div>
+
+  <div id = "containterScore">
+    <img id="scoreImage" src="assets/img/trophy.png"/>
+    <div id = "scorePoints"><b>{{match.score}}</b></div>
   </div>
 
 </ion-content>

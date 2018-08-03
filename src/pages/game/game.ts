@@ -18,6 +18,7 @@ export class GamePage {
   match: game.Match;
   time_Left_Question: number;
   run_stopWatch: boolean;
+  stopWatch_color: string;
   
   image: Array<String> = [];
 
@@ -25,7 +26,11 @@ export class GamePage {
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio) {
     
     //Cria as alternativas em branco para que apareça o espaço em branco
-    let auxAlternatives: Array<String> = [];auxAlternatives.push("");auxAlternatives.push("");auxAlternatives.push("");auxAlternatives.push("");
+    let auxAlternatives: Array<String> = [];
+    auxAlternatives.push("");
+    auxAlternatives.push("");
+    auxAlternatives.push("");
+    auxAlternatives.push("");
     
     // Seta a questão como nula, para que não dê erro, visto que é MVVM
     this.question = new Question(null, null, null, auxAlternatives, null, null, null, null, null);
@@ -53,6 +58,9 @@ export class GamePage {
     // Inicia o cronômetro
     this.run_stopWatch = true;
     this.startTimer();
+
+    
+
   }
 
   startTimer(){
@@ -64,11 +72,11 @@ export class GamePage {
 
         // Colore de laranja, vermelho ou preto de acordo com o tempo restante
         if (this.time_Left_Question <= 5)
-          document.getElementById("stopWatchTimer").style.color = "red";
+          this.stopWatch_color = "red";
         else if (this.time_Left_Question <= 10)
-          document.getElementById("stopWatchTimer").style.color = "orange";
+          this.stopWatch_color = "orange";
         else
-          document.getElementById("stopWatchTimer").style.color = "black";
+          this.stopWatch_color = "black";
 
         if (this.time_Left_Question == 0){
           // Acabou o tempo, o usuário não conseguiu responder a questão
@@ -130,7 +138,7 @@ export class GamePage {
       }
 
       // Soma pontuação por tempo
-      scoreTry += ( this.time_Left_Question >= 15 ? 
+      scoreTry += (this.time_Left_Question >= 15 ? 
                                 Parameters.POINTS_TIME_19_15 : 
                                 (this.time_Left_Question <= 14 && this.time_Left_Question >= 10 ? 
                                   Parameters.POINTS_TIME_14_10 : 
@@ -190,6 +198,7 @@ export class GamePage {
       title: (correct ? 'Parabéns, você acertou!' : 'Que pena, você errou!'),
       subTitle: points + " pontos.",
       message: '<font color="black">' + textBiblical + '</font>',
+      enableBackdropDismiss: false,
       cssClass: (correct ? 'correct-answer' : 'wrong-answer'),
       buttons: [
         {
@@ -218,6 +227,24 @@ export class GamePage {
 
   paintAlternative(correct: boolean, answer: number, selectedAlternative: number){
     // Pinta a alternativa de acordo com a resposta correta ou não
+
+    if (selectedAlternative == -1){
+      // Se for -1 significa que o tempo acabou, pinta todas de vermelho
+      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[0]).src = 'assets/img/quadro_alternativa_incorreta.png';
+      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[1]).src = 'assets/img/quadro_alternativa_incorreta.png';
+      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[2]).src = 'assets/img/quadro_alternativa_incorreta.png';
+      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[3]).src = 'assets/img/quadro_alternativa_incorreta.png';
+
+    }else{
+      let imageSelectedAlternative: HTMLImageElement = <HTMLImageElement>document.getElementsByClassName("frameAlternative")[selectedAlternative];
+      
+      if (correct)
+        imageSelectedAlternative.src = 'assets/img/quadro_alternativa_correta.png';
+      else
+        imageSelectedAlternative.src = 'assets/img/quadro_alternativa_incorreta.png';
+
+    }
+
   }
 
   getQuestion(){
@@ -386,11 +413,11 @@ export class GamePage {
 module game{
 
   export class Match {
-    public score: number;
+    public score: number = 0;
     public time_left: number = 120;
     public answers: Array<Answer> = [];
-    public hit: number;
-    public hit_Hard: number;  
+    public hit: number = 0;
+    public hit_Hard: number = 0;  
   }
 
   export class Answer{
