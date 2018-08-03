@@ -17,6 +17,7 @@ export class GamePage {
   question: Question;
   match: game.Match;
   time_Left_Question: number;
+  run_stopWatch: boolean;
   
   image: Array<String> = [];
 
@@ -35,28 +36,57 @@ export class GamePage {
     // Instancia uma nova partida
     this.match = new game.Match();
 
-    this.time_Left_Question = Parameters.TIME_QUESTION;
-
     //Prepara o áudio para acertos
     this.nativeAudio.preloadSimple('correctAudio', 'assets/sound/sound_correct_answer.mp3').then(mensagem => {
-        console.log(mensagem);
+      console.log('Sucesso ao carregar o áudio (correctAudio) | ' + mensagem);
       }, erro => {
-        console.log(erro);
+        console.log('Falha ao carregar o áudio (correctAudio) | ' + erro);
       });
     
     //Prepara o áudio para erros
     this.nativeAudio.preloadSimple('wrongAudio', 'assets/sound/sound_wrong_answer.mp3').then(mensagem => {
-        console.log(mensagem);
+        console.log('Sucesso ao carregar o áudio(wrongAudio) | ' + mensagem);
       }, erro => {
-        console.log(erro);
+        console.log('Falha ao carregar o áudio (wrongAudio) | ' + erro);
       });
+    
+    // Inicia o cronômetro
+    this.run_stopWatch = true;
+    this.startTimer();
+  }
+
+  startTimer(){
+    // Função responsável por passar o tempo restante para responder a questão
+    setTimeout(() => {
+      // Só decrementa caso o contador esteja rodando
+      if (this.run_stopWatch){
+        this.time_Left_Question -= 1;
+
+        // Colore de laranja, vermelho ou preto de acordo com o tempo restante
+        if (this.time_Left_Question <= 5)
+          document.getElementById("stopWatchTimer").style.color = "red";
+        else if (this.time_Left_Question <= 10)
+          document.getElementById("stopWatchTimer").style.color = "orange";
+        else
+          document.getElementById("stopWatchTimer").style.color = "black";
+
+        if (this.time_Left_Question == 0){
+          // Acabou o tempo, o usuário não conseguiu responder a questão
+          this.try(-1);
+        }
+      }
+
+      // Decrementa o contador e continua contando
+      this.startTimer();
+    }, 1000);
 
   }
 
   try(selectedAlternative: number){
-    // Função acionada no fim da questão ou quando o usuário seleciona a opção
-    
-    
+    // Função acionada no fim da questão ou quando o usuário seleciona a opção   
+
+    // Pára o cronômetro
+    this.run_stopWatch = false;
 
     //Variável responsável por identificar se o usuário acertou ou errou
     let correct: boolean;
@@ -165,6 +195,7 @@ export class GamePage {
         {
           text: 'Ok',
           handler: () => {
+            // Carrega a próxima questão
             this.getQuestion();
           }
         }
@@ -191,6 +222,9 @@ export class GamePage {
 
   getQuestion(){
     //Função acionada ao buscar uma questão aleatória
+
+    // Carrega novamente o tempo restante para responder à questão
+    this.time_Left_Question = Parameters.TIME_QUESTION;
 
     let questionNumber: number;
     questionNumber = this.aleatoryNumberQuestion();
@@ -228,17 +262,16 @@ export class GamePage {
                                     <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
                                     testamento, secaoBiblia, referenciaBiblica);
 
+      this.run_stopWatch = true;
     });
   }
 
   aleatoryNumberQuestion(): number{
-    
     let maxNumberQuestion_Debug: number = 129;
     return Math.floor(Math.random() * (maxNumberQuestion_Debug - 1)) + 1;
   }
 
   randomizeAlternatives(alternatives_and_answer: Array<Object>): Array<Object>{
-
     let randomizedList: Array<number> = [];
     let transitions_To: Array<Number> = [];
 
@@ -291,7 +324,6 @@ export class GamePage {
   }
 
   existOnList(list: Array<Object>, object: Object): boolean{
-
     // Verifica se o objeto passado como parâmetro existe na lista
     for (let i: number = 0; i < list.length; i++){
       if (list[i] == object)

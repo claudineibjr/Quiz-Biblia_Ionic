@@ -7,15 +7,20 @@
 <ion-content padding style="background-color: #1669bb">
 
   <figure id="containerQuestion">
-    <img id="frameQuestion" src="assets/img/quadro_questao.png" />  
+    <img id="frameQuestion" src="assets/img/quadro_questao.png"/>
     <figcaption id="txtQuestion"><b>{{question.getQuestion()}}</b></figcaption>
-    <figcaption id="txtSectionQuestion">{{question.getSecaoBiblia()}}</figcaption>
-    <figcaption id="txtLevelQuestion">{{question.getLevelQuestion_string()}}</figcaption>
+    <figcaption id="txtSectionQuestion"><b>Seção:</b> <br/>{{question.getSecaoBiblia()}}</figcaption>
+    <figcaption id="txtLevelQuestion"><b>Nível:</b><br/>{{question.getLevelQuestion_string()}}</figcaption>
   </figure>
 
   <figure id="containerAlternatives" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;">
-    <img id="frameAlternative" [src]={{'assets/img/' + ima + '.png'}} />
+    <img id="frameAlternative" src="assets/img/quadro_alternativa.png"/>
     <figcaption id="txtAlternative">{{alternative}}</figcaption>
   </figure>
+
+  <div id = "containterStopWatch">
+    <img id="stopWatchImage" src="assets/img/stopwatch.png"/>
+    <div id = "stopWatchTimer"><b>{{time_Left_Question}}</b></div>
+  </div>
 
 </ion-content>
