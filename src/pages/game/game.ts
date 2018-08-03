@@ -18,7 +18,7 @@ export class GamePage {
   match: game.Match;
   time_Left_Question: number;
   run_stopWatch: boolean;
-  stopWatch_color: string;
+  //stopWatch_color: string;
   
   image: Array<String> = [];
 
@@ -58,9 +58,29 @@ export class GamePage {
     // Inicia o cronômetro
     this.run_stopWatch = true;
     this.startTimer();
+  }
 
-    
-
+  getStopWatchImage(){
+    switch(this.time_Left_Question){
+      case 20: case 19: case 18:
+        return 'assets/img/stopwatch/0-8.png';
+      case 17: case 16:
+        return 'assets/img/stopwatch/1-8.png';
+      case 15: case 14:
+        return 'assets/img/stopwatch/2-8.png';
+      case 13: case 12: case 11:
+        return 'assets/img/stopwatch/3-8.png';
+      case 10: case 9: case 8:
+        return 'assets/img/stopwatch/4-8.png';
+      case 7: case 6:
+        return 'assets/img/stopwatch/5-8.png';
+      case 5: case 4:
+        return 'assets/img/stopwatch/6-8.png';
+      case 3: case 2:
+        return 'assets/img/stopwatch/7-8.png';
+      case 1: case 0:
+        return 'assets/img/stopwatch/8-8.png';
+    }
   }
 
   startTimer(){
@@ -70,13 +90,13 @@ export class GamePage {
       if (this.run_stopWatch){
         this.time_Left_Question -= 1;
 
-        // Colore de laranja, vermelho ou preto de acordo com o tempo restante
+        /*// Colore de laranja, vermelho ou preto de acordo com o tempo restante
         if (this.time_Left_Question <= 5)
           this.stopWatch_color = "red";
         else if (this.time_Left_Question <= 10)
           this.stopWatch_color = "orange";
         else
-          this.stopWatch_color = "black";
+          this.stopWatch_color = "black";*/
 
         if (this.time_Left_Question == 0){
           // Acabou o tempo, o usuário não conseguiu responder a questão

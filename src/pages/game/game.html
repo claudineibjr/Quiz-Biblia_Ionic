@@ -19,7 +19,8 @@
   </figure>
 
   <div id = "containterStopWatch">
-    <img id = "stopWatchImage" src="assets/img/stopwatch"/>
+    <img id = "stopWatchImage" [src]="getStopWatchImage()"/>
+    <!-- <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div> -->
     <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div>
   </div>
 
