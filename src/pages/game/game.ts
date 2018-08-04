@@ -77,7 +77,10 @@ export class GamePage {
   }
 
   getStopWatchImage(){
-    return 'assets/img/stopwatch/' + (20 - this.time_Left_Question).toString() + '-20.png';
+    if (this.time_Left_Question > 20)
+      return 'assets/img/stopwatch/0-20.png';
+    else
+      return 'assets/img/stopwatch/' + (20 - this.time_Left_Question).toString() + '-20.png';
   }
 
   startTimer(){
@@ -87,19 +90,12 @@ export class GamePage {
       if (this.run_stopWatch){
         this.time_Left_Question -= 1;
 
+        // Faltando 5 segundos começa o som do tick tack
         if (this.time_Left_Question == 5)
           this.nativeAudio.play('tick_tack_last5Seconds', () => console.log("Rodou"));
 
-        /*// Colore de laranja, vermelho ou preto de acordo com o tempo restante
-        if (this.time_Left_Question <= 5)
-          this.stopWatch_color = "red";
-        else if (this.time_Left_Question <= 10)
-          this.stopWatch_color = "orange";
-        else
-          this.stopWatch_color = "black";*/
-
+        // Acabou o tempo, o usuário não conseguiu responder a questão
         if (this.time_Left_Question == 0){
-          // Acabou o tempo, o usuário não conseguiu responder a questão
           this.try(-1);
         }
       }
@@ -435,6 +431,13 @@ export class GamePage {
       // Incrementa o contador de alternativas eliminadas
       this.alternatives_disabled++;
     }
+  }
+
+  help_More5Seconds(){
+    //if(temAjudaAinda)
+    if (this.run_stopWatch)
+      this.time_Left_Question += 5;
+
   }
 
   winPowerUP(){
