@@ -19,6 +19,9 @@ export class GamePage {
   time_Left_Question: number;
   run_stopWatch: boolean;
   //stopWatch_color: string;
+  alternatives_disabled: number;
+  alternatives_enabled: Array<boolean> = [];
+  alternatives_images: Array<String> = [];
   
   image: Array<String> = [];
 
@@ -53,8 +56,14 @@ export class GamePage {
         console.log('Sucesso ao carregar o áudio(wrongAudio) | ' + mensagem);
       }, erro => {
         console.log('Falha ao carregar o áudio (wrongAudio) | ' + erro);
-      });
-    
+      });    
+
+    // Seta o frame das imagens das alternativas
+    this.setImageInAllAlternatives(true);
+
+    // Inicia todas as alternativas como habilitadas
+    this.setVisibilityInAllAlternatives();
+
     // Inicia o cronômetro
     this.run_stopWatch = true;
     this.startTimer();
@@ -224,28 +233,41 @@ export class GamePage {
       this.nativeAudio.play('wrongAudio', () => console.log("Rodou"));
     }
   }
-  
+
+  setVisibilityInAllAlternatives(){
+    this.alternatives_enabled = [true, true, true, true];
+  }
+
+  setImageInAllAlternatives(resetDefault: boolean, urlImage: String = ''){
+    if (resetDefault)
+      urlImage = 'assets/img/quadro_alternativa.png';
+
+    if (this.alternatives_images.length != 4){
+      this.alternatives_images = [urlImage,urlImage,urlImage,urlImage];
+    }else{
+      this.alternatives_images[0] = urlImage;
+      this.alternatives_images[1] = urlImage;
+      this.alternatives_images[2] = urlImage;
+      this.alternatives_images[3] = urlImage;
+    }
+  }
+
+  setImageinAlternative(indexAlternative: number, urlImage: String){
+    this.alternatives_images[indexAlternative] = urlImage;
+  }
 
   paintAlternative(correct: boolean, answer: number, selectedAlternative: number){
     // Pinta a alternativa de acordo com a resposta correta ou não
 
     if (selectedAlternative == -1){
       // Se for -1 significa que o tempo acabou, pinta todas de vermelho
-      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[0]).src = 'assets/img/quadro_alternativa_incorreta.png';
-      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[1]).src = 'assets/img/quadro_alternativa_incorreta.png';
-      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[2]).src = 'assets/img/quadro_alternativa_incorreta.png';
-      (<HTMLImageElement>document.getElementsByClassName("frameAlternative")[3]).src = 'assets/img/quadro_alternativa_incorreta.png';
-
-    }else{
-      let imageSelectedAlternative: HTMLImageElement = <HTMLImageElement>document.getElementsByClassName("frameAlternative")[selectedAlternative];
-      
+      this.setImageInAllAlternatives(false, 'assets/img/quadro_alternativa_incorreta.png');
+    }else{     
       if (correct)
-        imageSelectedAlternative.src = 'assets/img/quadro_alternativa_correta.png';
+        this.setImageinAlternative(selectedAlternative, 'assets/img/quadro_alternativa_correta.png');
       else
-        imageSelectedAlternative.src = 'assets/img/quadro_alternativa_incorreta.png';
-
+      this.setImageinAlternative(selectedAlternative, 'assets/img/quadro_alternativa_incorreta.png');
     }
-
   }
 
   getQuestion(){
@@ -254,6 +276,10 @@ export class GamePage {
     // Carrega novamente o tempo restante para responder à questão
     this.time_Left_Question = Parameters.TIME_QUESTION;
 
+    // Inicia a variável responsável por controlar o número de alternativas que foram desabilitadas
+    this.alternatives_disabled = 0;
+
+    // Gera um número aleatório para buscar a questão
     let questionNumber: number;
     questionNumber = this.aleatoryNumberQuestion();
 
@@ -290,6 +316,13 @@ export class GamePage {
                                     <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
                                     testamento, secaoBiblia, referenciaBiblica);
 
+      // Reseta as alternativas visíveis
+      this.setVisibilityInAllAlternatives();
+
+      // Reseta a imagem utilizada na alternativa
+      this.setImageInAllAlternatives(true);
+
+      // Habilita o cronômetor a rodar novamente
       this.run_stopWatch = true;
     });
   }
@@ -373,6 +406,25 @@ export class GamePage {
         this.winPowerUP();
         this.match.hit_Hard = 0;
     }    
+  }
+
+  help_DeleteIncorretAnswer(){
+    //if (temAjudaAinda)
+    if (this.alternatives_disabled < 3) {
+      //Gera um número aleatório entre 0 e 3, que será a alternativa a ser eliminada
+      let deleted_Alternative: number = Math.floor(Math.random() * 4);
+
+      // Enquanto a alternativa aleatória for a correta ou já estiver desabilitada, gera uma nova alternativa aleatória
+      while (deleted_Alternative == this.question.getAnswer() || this.alternatives_enabled[deleted_Alternative] == false){
+        deleted_Alternative = Math.floor(Math.random() * 4);
+      }
+
+      // Elimina a alternativa gerada aleatóriamente
+      this.alternatives_enabled[deleted_Alternative] = false;
+
+      // Incrementa o contador de alternativas eliminadas
+      this.alternatives_disabled++;
+    }
   }
 
   winPowerUP(){

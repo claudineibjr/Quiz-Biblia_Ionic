@@ -58,6 +58,12 @@ $containerAlternativesMarginTop: 5px;
 #containerAlternatives{
     margin-top: $containerAlternativesMarginTop;
 }
+
+#bottomContainer{
+    position: fixed;
+    bottom: 0;
+}
+
 /* ------------------------------------------------------------- */
 /*         Classes utilizadas para exibição do cronômetro        */
 /* ------------------------------------------------------------- */
@@ -84,7 +90,7 @@ $containerAlternativesMarginTop: 5px;
 /* ------------------------------------------------------------- */
 #containterScore{
     text-align: right;
-    position: absolute;
+    //position: absolute;
 }
 
 #scoreImage{

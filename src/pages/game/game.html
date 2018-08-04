@@ -1,32 +1,54 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Jogar</ion-title>
+
+    <!-- Botões para acionar os Power-UPs -->
+    <ion-buttons end>
+      <button ion-button icon-only (click) = 'help_DeleteIncorretAnswer()' >
+        <ion-icon name="options"></ion-icon>
+      </button>
+
+      <button ion-button icon-only>
+        <ion-icon name="options"></ion-icon>
+      </button>      
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding style="background-color: #1669bb">
 
+  <!-- Container com o texto da questão-->
   <figure id="containerQuestion">
     <img id="frameQuestion" src="assets/img/quadro_questao.png"/>
     <figcaption id="txtQuestion"><b>{{question.getQuestion()}}</b></figcaption>
+
+    <!-- Seção da bíblia referente à questão -->
     <figcaption id="txtSectionQuestion"><b>Seção:</b> <br/>{{question.getSecaoBiblia()}}</figcaption>
+
+    <!-- Nível de dificuldade da questão -->
     <figcaption id="txtLevelQuestion"><b>Nível:</b><br/>{{question.getLevelQuestion_string()}}</figcaption>
   </figure>
 
-  <figure id="containerAlternatives" (click) = "try(number)" *ngFor="let alternative of question.getAlternatives(); let number = index;">
-    <img class="frameAlternative" src="assets/img/quadro_alternativa.png"/>
-    <figcaption id="txtAlternative">{{alternative}}</figcaption>
+  <!-- Container para cada alternativa -->
+  <figure id = "containerAlternatives" (click) = "try(number)" *ngFor = "let alternative of question.getAlternatives(); let number = index;">
+    <img class = "frameAlternative" *ngIf = 'alternatives_enabled[number]' [src] = "alternatives_images[number]"/>
+    <figcaption id = "txtAlternative" *ngIf = 'alternatives_enabled[number]' >{{alternative}}</figcaption>
   </figure>
 
-  <div id = "containterStopWatch">
-    <img id = "stopWatchImage" [src]="getStopWatchImage()"/>
-    <!-- <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div> -->
-    <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div>
-  </div>
+  <!-- Contâineres localizados na parte inferior da tela -->
+  <div id = "bottomContainer">
+    <!-- Container com o cronômetro com o tempo restante -->
+    <div id = "containterStopWatch">
+      <img id = "stopWatchImage" [src]="getStopWatchImage()"/>
+      <div id = "stopWatchTimer" [ngStyle]="{'color': stopWatch_color}"><b>{{time_Left_Question}}</b></div>
+    </div>
 
-  <div id = "containterScore">
-    <img id="scoreImage" src="assets/img/trophy.png"/>
-    <div id = "scorePoints"><b>{{match.score}}</b></div>
+    <!-- Container com a pontuação da partida -->
+    <div id = "containterScore">
+      <img id="scoreImage" src="assets/img/trophy.png"/>
+      <div id = "scorePoints"><b>{{match.score}}</b></div>
+    </div>
   </div>
 
 </ion-content>
