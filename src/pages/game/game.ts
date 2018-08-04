@@ -61,26 +61,7 @@ export class GamePage {
   }
 
   getStopWatchImage(){
-    switch(this.time_Left_Question){
-      case 20: case 19: case 18:
-        return 'assets/img/stopwatch/0-8.png';
-      case 17: case 16:
-        return 'assets/img/stopwatch/1-8.png';
-      case 15: case 14:
-        return 'assets/img/stopwatch/2-8.png';
-      case 13: case 12: case 11:
-        return 'assets/img/stopwatch/3-8.png';
-      case 10: case 9: case 8:
-        return 'assets/img/stopwatch/4-8.png';
-      case 7: case 6:
-        return 'assets/img/stopwatch/5-8.png';
-      case 5: case 4:
-        return 'assets/img/stopwatch/6-8.png';
-      case 3: case 2:
-        return 'assets/img/stopwatch/7-8.png';
-      case 1: case 0:
-        return 'assets/img/stopwatch/8-8.png';
-    }
+    return 'assets/img/stopwatch/' + (20 - this.time_Left_Question).toString() + '-20.png';
   }
 
   startTimer(){
