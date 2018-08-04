@@ -58,6 +58,13 @@ export class GamePage {
         console.log('Falha ao carregar o áudio (wrongAudio) | ' + erro);
       });    
 
+    // Prepara o áudio do tick tack para os últimos 5 segundos
+    this.nativeAudio.preloadSimple('tick_tack_last5Seconds', 'assets/sound/sound_tick_tack_last5seconds.mp3').then(mensagem => {
+      console.log('Sucesso ao carregar o áudio(TickTack) | ' + mensagem);
+    }, erro => {
+      console.log('Falha ao carregar o áudio (TickTack) | ' + erro);
+    });
+
     // Seta o frame das imagens das alternativas
     this.setImageInAllAlternatives(true);
 
@@ -79,6 +86,9 @@ export class GamePage {
       // Só decrementa caso o contador esteja rodando
       if (this.run_stopWatch){
         this.time_Left_Question -= 1;
+
+        if (this.time_Left_Question == 5)
+          this.nativeAudio.play('tick_tack_last5Seconds', () => console.log("Rodou"));
 
         /*// Colore de laranja, vermelho ou preto de acordo com o tempo restante
         if (this.time_Left_Question <= 5)
