@@ -31,10 +31,12 @@
   </figure>
 
   <!-- Container para cada alternativa -->
-  <figure id = "containerAlternatives" (click) = "try(number)" *ngFor = "let alternative of question.getAlternatives(); let number = index;">
-    <img class = "frameAlternative" *ngIf = 'alternatives_enabled[number]' [src] = "alternatives_images[number]"/>
-    <figcaption id = "txtAlternative" *ngIf = 'alternatives_enabled[number]' >{{alternative}}</figcaption>
-  </figure>
+  <div id = "divAlternatives" *ngFor = "let alternative of question.getAlternatives(); let number = index;" >
+    <figure id = "containerAlternatives" *ngIf = 'alternatives_enabled[number]' (click) = "try(number)">
+      <img class = "frameAlternative" [src] = "alternatives_images[number]"/>
+      <figcaption id = "txtAlternative" >{{alternative}}</figcaption>
+    </figure>  
+  </div>
 
   <!-- Contâineres localizados na parte inferior da tela -->
   <div id = "bottomContainer">
