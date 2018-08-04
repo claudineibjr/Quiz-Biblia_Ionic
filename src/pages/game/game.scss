@@ -26,6 +26,22 @@ page-game {
 }
 
 /* ---------------------------------------------------------------------- */
+/*     Classes que servem para a criação dos badges àcima dos PowerUPs    */
+/* ---------------------------------------------------------------------- */
+.powerUP-badge {
+    background-color: #1976D2;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    border-radius: 100%;
+}
+
+.iconTop{
+    width: 32px;
+    height: 32px;
+}
+
+/* ---------------------------------------------------------------------- */
 /* Classes que servem para a criação dos quadro com a questão/alternativa */
 /* ---------------------------------------------------------------------- */
 
