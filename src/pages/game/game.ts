@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { User } from '../../model/User';
 import { Question } from '../../model/Question';
 import { Parameters } from '../../model/Parameters';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
 
