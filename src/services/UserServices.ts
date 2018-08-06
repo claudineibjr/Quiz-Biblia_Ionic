@@ -36,6 +36,19 @@ export class UserServices{
         });
     }
 
+    public static saveUserInDb(db: AngularFireDatabase, user: User): void{
+        db.object('/usuario/' + user.getUid()).update({
+            'email': user.getEmail(),
+            'name': user.getNome(),
+            'score': user.getScore(),
+            'lastGame': user.getLastGame(),
+            'firstAccess': user.getFirstAccess(),
+            'bonus': user.getBonus(),
+            'preferences': user.getPreferences(),
+            'answeredList': user.getAnswered()
+        });
+    }
+
     public static getDbUser(db: AngularFireDatabase, userUID: string): void{
         //Função responsável por buscar o usuário no banco de dados
 

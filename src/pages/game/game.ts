@@ -102,6 +102,9 @@ export class GamePage {
     // Salva a pontuação e a data do último jogo
     UserServices.getUser().addScore(this.match.score);
     UserServices.getUser().setLastGame(new Date(Date.now()));
+
+    // Salva as alterações no banco de dados
+    UserServices.saveUserInDb(this.db, UserServices.getUser());
   }
 
   getStopWatchImage(){
@@ -194,6 +197,10 @@ export class GamePage {
                                     )
                                   )
                             );
+
+
+      // Adiciona a questão na lista de questões respondidas
+      UserServices.getUser().addAnswered(this.question.getId());
 
     }else{
       
