@@ -6,17 +6,17 @@
     <ion-buttons end>
       <button ion-button icon-only (click) = 'help_BiblicalReference()' >
         <img class="iconTop" src = "assets/img/biblical_reference.png"/>
-        <ion-badge class="powerUP-badge">5</ion-badge>
+        <ion-badge class="powerUP-badge">{{bonus_BiblicalReference}}</ion-badge>
       </button>
 
       <button ion-button icon-only (click) = 'help_DeleteIncorretAnswer()' >
         <img class="iconTop" src = "assets/img/help-icon.png"/>
-        <ion-badge class="powerUP-badge">5</ion-badge>
+        <ion-badge class="powerUP-badge">{{bonus_Alternative}}</ion-badge>
       </button>
 
       <button ion-button icon-only (click) = 'help_More5Seconds()' >
         <img class="iconTop" src = "assets/img/+5_seconds.png"/>
-        <ion-badge class="powerUP-badge">5</ion-badge>
+        <ion-badge class="powerUP-badge">{{bonus_Time}}</ion-badge>
       </button>      
     </ion-buttons>
 

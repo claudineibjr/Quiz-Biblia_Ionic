@@ -24,6 +24,8 @@ export class MainPage {
   
   constructor(public navParams: NavParams, public db: AngularFireDatabase) {
     UsuarioService.getDbUser(db, navParams.get('userUID'));
+    UsuarioService.getUser().getBonus().getBiblicalReference();
+    UsuarioService.getUser().getBonus().getTime();
   }
 
 }

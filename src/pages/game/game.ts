@@ -5,6 +5,7 @@ import { Parameters } from '../../model/Parameters';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { UsuarioService } from '../../services/usuarioServices';
 
 @Component({
   selector: 'page-game',
@@ -22,6 +23,10 @@ export class GamePage {
   alternatives_enabled: Array<boolean> = [];
   alternatives_images: Array<String> = [];
   
+  bonus_Alternative: number;
+  bonus_BiblicalReference: number;
+  bonus_Time: number;
+
   image: Array<String> = [];
 
   constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
@@ -73,6 +78,11 @@ export class GamePage {
     // Inicia o cronômetro
     this.run_stopWatch = true;
     this.startTimer();
+
+    // Define os bônus do usuário
+    this.bonus_Alternative = UsuarioService.getUser().getBonus().getAlternative();
+    this.bonus_BiblicalReference = UsuarioService.getUser().getBonus().getBiblicalReference();
+    this.bonus_Time = UsuarioService.getUser().getBonus().getTime();
   }
 
   getStopWatchImage(){
