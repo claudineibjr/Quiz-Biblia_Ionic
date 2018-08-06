@@ -22,7 +22,9 @@
     <br><br>
     <button ion-button block (click)="doLogin()">Login</button>
     <button ion-button block (click)="facebookLogin()">Login com o Facebook</button>
-    <button ion-button block color="light" (click)="forgotPassword()">Esqueceu sua senha?</button>    
+    <button ion-button block (click)="doRegister()">Cadastro</button>
+    <br/>
+    <button ion-button block color="light" (click)="forgotPassword()">Esqueceu sua senha?</button>
 
     <ion-card *ngIf="userProfile">
       <img [src]="userProfile.photoURL"/>

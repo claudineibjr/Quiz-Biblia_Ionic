@@ -32,7 +32,8 @@ export class GamePage {
   image: Array<String> = [];
 
   constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
-                public alertCtrl: AlertController, public nativeAudio: NativeAudio, public toastCtrl: ToastController) {
+                public alertCtrl: AlertController, public nativeAudio: NativeAudio,
+                public toastCtrl: ToastController) {
     
     //Cria as alternativas em branco para que apareça o espaço em branco
     let auxAlternatives: Array<String> = [];
@@ -104,7 +105,7 @@ export class GamePage {
     UserServices.getUser().setLastGame(new Date(Date.now()));
 
     // Salva as alterações no banco de dados
-    UserServices.saveUserInDb(this.db, UserServices.getUser());
+    UserServices.updateUserInDb(this.db, UserServices.getUser());
   }
 
   getStopWatchImage(){

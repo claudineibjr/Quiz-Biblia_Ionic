@@ -19,10 +19,12 @@ export class UserServices{
         return this.user;
     }
 
-    public static login(firebaseAuthentication: AngularFireAuth, email: string, password: string): Promise<string>{       
+    public static login(firebaseAuthentication: AngularFireAuth, email: string, password: string): Promise<string>{
+        // Função responsável por fazer o login do usuário no Firebase Authentication
         return new Promise((resolve, reject) => {           
             firebaseAuthentication.auth.signInWithEmailAndPassword(email, password)
             .then((success => {
+                // Devolve o uid do usuário para que a camada anterior faça o login
                 resolve(success.uid);
             })).catch((error => {
                 switch(error.name){
@@ -36,10 +38,33 @@ export class UserServices{
         });
     }
 
-    public static saveUserInDb(db: AngularFireDatabase, user: User): void{
+    public static register(auth: AngularFireAuth, db: AngularFireDatabase, name: string, email: string, password: string): Promise<User>{
+        // Função responsáel por criar um usuário no Firebase Authentication com base nos parâmetros passados
+
+        return new Promise((resolve, reject) => {
+            // Tenta criar o usuário com base no e-mail e senha
+            auth.auth.createUserWithEmailAndPassword(email, password)
+                .then((success => {
+                    // Pega o UID do usuário no Firebase e cria o usuário localmente
+                    let user: User = new User(success.uid);
+                    user.setName(name);
+                    user.setEmail(email);
+
+                    // Salva o usuário criado no Firebase Authentication no Firebase Database
+                    this.updateUserInDb(db, user);
+
+                    // Devole à camada anterior o usuário criado
+                    resolve(user);
+                })).catch((error =>{
+                    reject(error.message + "\t" + error.stack);
+                }));
+        });
+    }
+
+    public static updateUserInDb(db: AngularFireDatabase, user: User): void{
         db.object('/usuario/' + user.getUid()).update({
             'email': user.getEmail(),
-            'name': user.getNome(),
+            'name': user.getName(),
             'score': user.getScore(),
             'lastGame': user.getLastGame(),
             'firstAccess': user.getFirstAccess(),
@@ -58,7 +83,7 @@ export class UserServices{
             snapshots.forEach(snapshot =>{
                 switch(snapshot.key){
                     case 'email': { this.user.setEmail(snapshot.val());  break;  }
-                    case 'name': { this.user.setNome(snapshot.val());  break;  }
+                    case 'name': { this.user.setName(snapshot.val());  break;  }
                     case 'score': { this.user.setScore(snapshot.val());  break;  }
                     case 'lastGame': { this.user.setLastGame(snapshot.val());  break;  }
                     case 'firstAccess': { this.user.setFirstAccess(snapshot.val());  break;  }

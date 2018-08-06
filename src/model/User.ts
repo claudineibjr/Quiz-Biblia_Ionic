@@ -1,17 +1,17 @@
 export class User{
 
-    private email: string;
-    private name: string;
-    private uid: string;
-    private imageLink: string;
+    private email: string = '';
+    private name: string = '';
+    private uid: string = '';
+    private imageLink: string = '';
     private answeredList: Array<number> = [];
-    private score: number;
-    private lastGame: Date;
-    private firstAccess: Date;
+    private score: number = 0;
+    private lastGame: Date = new Date();
+    private firstAccess: Date = new Date();
     private preferences: User.Preferences = new User.Preferences();
     private bonus: User.Bonus = new User.Bonus();
 
-    constructor(uid: string){
+    constructor(uid: string = ''){
         this.uid = uid;
     }
 
@@ -41,8 +41,8 @@ export class User{
     public getEmail(): string               {return this.email;}
     public setEmail(email: string): void    {this.email = email;}
 
-    public getNome(): string            {return this.name;}
-    public setNome(nome: string): void  {this.name = nome;}
+    public getName(): string            {return this.name;}
+    public setName(name: string): void  {this.name = name;}
 
     public getUid(): string {return this.uid;}
 
@@ -73,10 +73,10 @@ export class User{
 export module User{
     
     export class Bonus{
-        private time: number;
-        private alternative: number;
-        private biblicalReference: number;
-        private lastBonusReceived: Date;
+        private time: number = 0;
+        private alternative: number = 0;
+        private biblicalReference: number = 0;
+        private lastBonusReceived: Date = new Date();
 
         constructor(){
             
@@ -99,8 +99,8 @@ export module User{
     }
 
     export class Preferences{
-        private sound: boolean;
-        private vibration: boolean;    
+        private sound: boolean = true;
+        private vibration: boolean = true;
 
         constructor(){
             
