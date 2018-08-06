@@ -1,8 +1,10 @@
 import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import 'rxjs/add/operator/take';
 
 import { User } from "../model/User";
+import { resolveDep } from '@angular/core/src/view/provider';
 
 export class UserServices{
 
@@ -15,6 +17,23 @@ export class UserServices{
     private static user: User = null;
     public static getUser(): User{
         return this.user;
+    }
+
+    public static login(firebaseAuthentication: AngularFireAuth, email: string, password: string): Promise<string>{       
+        return new Promise((resolve, reject) => {           
+            firebaseAuthentication.auth.signInWithEmailAndPassword(email, password)
+            .then((success => {
+                resolve(success.uid);
+            })).catch((error => {
+                switch(error.name){
+                    case 'auth/invalid-email':  reject('O endereço de e-mail informado não é válido.'); break;
+                    case 'auth/user-disabled':  reject('O usuário correspondente ao e-mail informado foi desativado.'); break;
+                    case 'auth/user-not-found': reject('Não existe nenhum usuário cadastrado com este e-mail.');    break;
+                    case 'auth/wrong-password': reject('A senha digitada não corresponde à senha cadastrada para este endereço de e-mail.');    break;
+                    default:                    reject(error.message + "\t" + error.stack);
+                }
+            }));
+        });
     }
 
     public static getDbUser(db: AngularFireDatabase, userUID: string): void{

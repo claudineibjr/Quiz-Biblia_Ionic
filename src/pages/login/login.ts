@@ -6,6 +6,7 @@ import { ToastController } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { AlertController } from 'ionic-angular';
 import firebase from 'firebase';
+import { UserServices } from '../../services/UserServices';
 
 @Component({
   selector: 'page-login',
@@ -75,32 +76,22 @@ export class LoginPage {
 
   doLogin(){
     // Função responsável por fazer o login do usuário com base no e-mail e senha
+    if (this.email.length > 0 && this.password.length > 0){
+      UserServices.login(this.firebaseAuthentication, this.email, this.password).then((userUID) => {
+        // Login efetuado com sucesso, vai para a próxima tela
+        this.navCtrl.push(MainPage, {
+          userUID: userUID
+        });
+      }).catch((errorMessage) => {
+        // Exibe mensagem informando que houve um erro no momento de tentar o login
+        let toastMessage = this.toastCtrl.create({
+          message: errorMessage,
+          duration: 3000
+        });
 
-    this.firebaseAuthentication.auth.signInWithEmailAndPassword(
-     this.email, this.password).then((success => {
-      
-      // Exibe mensagem informando que o login foi efetuado com sucesso
-      let toastMessage = this.toastCtrl.create({
-                message: success.message,
-                duration: 3000
-              });
-      toastMessage.present();
-
-      // Abre a próxima tela
-      this.navCtrl.push(MainPage, {
-        userUID: success.uid
+        toastMessage.present();
       });
-
-    })).catch((error => {
-
-      // Exibe mensagem informando que houve um erro no momento de tentar o login
-      let toastMessage = this.toastCtrl.create({
-                      message: error.message + "\t" + error.stack,
-                      duration: 3000
-                    });
-      toastMessage.present();
-    }));
-
+    }
   }
 
   forgotPassword(){
