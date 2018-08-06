@@ -13,13 +13,13 @@
     <h3>Dados do perfil</h3>
 
     <ion-item>
-      <ion-label floating>E-mail</ion-label>
-      <ion-input type="text" value=""></ion-input>
+      <ion-label floating>Nome</ion-label>
+      <ion-input type="text" [(ngModel)]="user_Name"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>Nome</ion-label>
-      <ion-input type="text" value=""></ion-input>
+      <ion-label floating>E-mail</ion-label>
+      <ion-input type="email" [(ngModel)]="user_Email"></ion-input>
     </ion-item>
 
 
@@ -27,61 +27,58 @@
 
     <ion-item>
       <ion-label>Permite sons</ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]='user_Preferences_Sound'></ion-checkbox>
     </ion-item>
 
     <ion-item>
       <ion-label>Permite vibração</ion-label>
-      <ion-checkbox></ion-checkbox>
-    </ion-item>
-
-    <ion-item>
-      <ion-label>Permite narração</ion-label>
-      <ion-checkbox></ion-checkbox>
+      <ion-checkbox [(ngModel)]='user_Preferences_Vibration'></ion-checkbox>
     </ion-item>
 
 
     <h3>Bônus</h3>
         
     <ion-item>
-      <ion-label floating>Data do último bônus recebido</ion-label>
-      <ion-datetime displayFormat="DD/MM/YYYY hh:mm"></ion-datetime>
+      <ion-label>Data do último bônus recebido</ion-label>
+      <ion-datetime readonly displayFormat="DD/MM/YYYY hh:mm" [(ngModel)]='user_Bonus_LastReceived'></ion-datetime>
     </ion-item>
     
     <ion-item>
-      <ion-label floating>+5 segundos</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-label floating>Referência bíblica</ion-label>
+      <ion-input readonly type="number" [(ngModel)]='user_Bonus_BiblicalReference'></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label floating>Elimina alternativa</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input readonly type="number" [(ngModel)]='user_Bonus_Alternative'></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>Referência bíblica</ion-label>
-      <ion-input type="number"></ion-input>
-    </ion-item>
+      <ion-label floating>+5 segundos</ion-label>
+      <ion-input readonly type="number" [(ngModel)]='user_Bonus_Time'></ion-input>
+    </ion-item>    
 
     <h3>Pontuação</h3>
 
     <ion-item>
       <ion-label floating>Pontuação</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input readonly type="number" [(ngModel)]="user_Score"></ion-input>
     </ion-item>    
 
     <ion-item>
       <ion-label floating>Questões respondidas corretamente</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input readonly type="number" [(ngModel)]="user_AnsweredNumber"></ion-input>
     </ion-item>
 
   </ion-list>
 
   <ion-grid style="display: inline-block; vertical-align: bottom;">
     <ion-row>
-      <ion-col> <button ion-button block color="danger">Cancelar</button> </ion-col>
+      <ion-col> <button ion-button block color="light">Cancelar</button> </ion-col>
       <ion-col> <button ion-button block color="default">Salvar</button> </ion-col>
     </ion-row>
+    <ion-row> <button ion-button block color="danger">Resetar Conta</button>  </ion-row>
+    <ion-row> <button ion-button block color="dark">Apagar Conta</button>     </ion-row>
   </ion-grid>
 
 </ion-content>
