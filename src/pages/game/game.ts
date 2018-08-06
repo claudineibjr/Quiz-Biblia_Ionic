@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Question } from '../../model/Question';
-import { Parameters } from '../../model/Parameters';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { ToastController } from 'ionic-angular';
+
+import { Question } from '../../model/Question';
+import { Parameters } from '../../model/Parameters';
 import { UsuarioService } from '../../services/usuarioServices';
 
 @Component({
@@ -18,7 +20,6 @@ export class GamePage {
   match: game.Match;
   time_Left_Question: number;
   run_stopWatch: boolean;
-  //stopWatch_color: string;
   alternatives_disabled: number;
   alternatives_enabled: Array<boolean> = [];
   alternatives_images: Array<String> = [];
@@ -30,7 +31,7 @@ export class GamePage {
   image: Array<String> = [];
 
   constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
-                public alertCtrl: AlertController, public nativeAudio: NativeAudio) {
+                public alertCtrl: AlertController, public nativeAudio: NativeAudio, public toastCtrl: ToastController) {
     
     //Cria as alternativas em branco para que apareça o espaço em branco
     let auxAlternatives: Array<String> = [];
@@ -83,6 +84,11 @@ export class GamePage {
     this.bonus_Alternative = UsuarioService.getUser().getBonus().getAlternative();
     this.bonus_BiblicalReference = UsuarioService.getUser().getBonus().getBiblicalReference();
     this.bonus_Time = UsuarioService.getUser().getBonus().getTime();
+  }
+
+  ionViewWillLeave(){
+    // Pára o cronômetro
+    this.run_stopWatch = false;
   }
 
   getStopWatchImage(){
@@ -424,39 +430,50 @@ export class GamePage {
   }
 
   help_BiblicalReference(){
-    //if (temAjudaAinda)
-    let alert = this.alertCtrl.create({
-      title: ('Referência bíblica'),
-      subTitle: this.question.getReferenciaBiblica()
-    });
+    if (this.bonus_BiblicalReference > 0){
+      let alert = this.alertCtrl.create({
+        title: ('Referência bíblica'),
+        subTitle: this.question.getReferenciaBiblica()
+      });
 
-    alert.present();
+      alert.present();
+
+      // Decrementa o bônus
+      this.bonus_BiblicalReference -= 1;
+    }
   }
 
   help_DeleteIncorretAnswer(){
-    //if (temAjudaAinda)
-    if (this.alternatives_disabled < 3) {
-      //Gera um número aleatório entre 0 e 3, que será a alternativa a ser eliminada
-      let deleted_Alternative: number = Math.floor(Math.random() * 4);
+    if (this.bonus_Alternative > 0){
+      if (this.alternatives_disabled < 3) {
+        //Gera um número aleatório entre 0 e 3, que será a alternativa a ser eliminada
+        let deleted_Alternative: number = Math.floor(Math.random() * 4);
 
-      // Enquanto a alternativa aleatória for a correta ou já estiver desabilitada, gera uma nova alternativa aleatória
-      while (deleted_Alternative == this.question.getAnswer() || this.alternatives_enabled[deleted_Alternative] == false){
-        deleted_Alternative = Math.floor(Math.random() * 4);
+        // Enquanto a alternativa aleatória for a correta ou já estiver desabilitada, gera uma nova alternativa aleatória
+        while (deleted_Alternative == this.question.getAnswer() || this.alternatives_enabled[deleted_Alternative] == false){
+          deleted_Alternative = Math.floor(Math.random() * 4);
+        }
+
+        // Elimina a alternativa gerada aleatóriamente
+        this.alternatives_enabled[deleted_Alternative] = false;
+
+        // Incrementa o contador de alternativas eliminadas
+        this.alternatives_disabled++;
+
+        // Decrementa o bônus
+        this.bonus_Alternative -= 1;
       }
-
-      // Elimina a alternativa gerada aleatóriamente
-      this.alternatives_enabled[deleted_Alternative] = false;
-
-      // Incrementa o contador de alternativas eliminadas
-      this.alternatives_disabled++;
     }
   }
 
   help_More5Seconds(){
-    //if(temAjudaAinda)
-    if (this.run_stopWatch)
-      this.time_Left_Question += 5;
+    if (this.bonus_Time > 0){
+      if (this.run_stopWatch)
+        this.time_Left_Question += 5;
 
+      // Decrementa o bônus
+      this.bonus_Time -= 1; 
+    }
   }
 
   winPowerUP(){
