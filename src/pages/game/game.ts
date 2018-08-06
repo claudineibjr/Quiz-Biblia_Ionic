@@ -413,6 +413,16 @@ export class GamePage {
     }    
   }
 
+  help_BiblicalReference(){
+    //if (temAjudaAinda)
+    let alert = this.alertCtrl.create({
+      title: ('Referência bíblica'),
+      subTitle: this.question.getReferenciaBiblica()
+    });
+
+    alert.present();
+  }
+
   help_DeleteIncorretAnswer(){
     //if (temAjudaAinda)
     if (this.alternatives_disabled < 3) {

@@ -26,15 +26,15 @@ export class Question {
         this.referenciaBiblica = referenciaBiblica;
     }
 
-    public getId(): number{                     return this.idQuestion;     }
-    public getQuestion(): string{               return this.question;       }
-    public getAnswer(): number{                 return this.answer;         }
-    public getAlternatives(): Array<String>{    return this.alternatives;   }
-    public getTextBiblical(): string{           return this.textBiblical;   }
-    public getLevelQuestion(): number{          return this.levelQuestion;  }
-    public getTestamento(): string{             return this.testamento;     }
-    public getReferenciaBiblica(): string{      return this.testamento;     }
-    public getSecaoBiblia(): string{            return this.secaoBiblia;    }
+    public getId(): number{                     return this.idQuestion;         }
+    public getQuestion(): string{               return this.question;           }
+    public getAnswer(): number{                 return this.answer;             }
+    public getAlternatives(): Array<String>{    return this.alternatives;       }
+    public getTextBiblical(): string{           return this.textBiblical;       }
+    public getLevelQuestion(): number{          return this.levelQuestion;      }
+    public getTestamento(): string{             return this.testamento;         }
+    public getReferenciaBiblica(): string{      return this.referenciaBiblica;  }
+    public getSecaoBiblia(): string{            return this.secaoBiblia;        }
     public getLevelQuestion_string(): string{
         switch(this.levelQuestion){
             case 1:
