@@ -10,7 +10,7 @@ import { HelpPage } from '../help/help';
 
 import { User } from '../../model/User';
 
-import { UsuarioService } from '../../services/usuarioServices';
+import { UserServices } from '../../services/UserServices';
 
 @Component({
   templateUrl: 'main.html'
@@ -23,9 +23,6 @@ export class MainPage {
   tab4Root = HelpPage;
   
   constructor(public navParams: NavParams, public db: AngularFireDatabase) {
-    UsuarioService.getDbUser(db, navParams.get('userUID'));
-    UsuarioService.getUser().getBonus().getBiblicalReference();
-    UsuarioService.getUser().getBonus().getTime();
+    UserServices.getDbUser(db, navParams.get('userUID'));
   }
-
 }

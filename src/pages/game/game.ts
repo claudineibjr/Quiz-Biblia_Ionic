@@ -7,7 +7,8 @@ import { ToastController } from 'ionic-angular';
 
 import { Question } from '../../model/Question';
 import { Parameters } from '../../model/Parameters';
-import { UsuarioService } from '../../services/usuarioServices';
+import { UserServices } from '../../services/UserServices';
+import { User } from '../../model/User';
 
 @Component({
   selector: 'page-game',
@@ -81,14 +82,26 @@ export class GamePage {
     this.startTimer();
 
     // Define os bônus do usuário
-    this.bonus_Alternative = UsuarioService.getUser().getBonus().getAlternative();
-    this.bonus_BiblicalReference = UsuarioService.getUser().getBonus().getBiblicalReference();
-    this.bonus_Time = UsuarioService.getUser().getBonus().getTime();
+    this.bonus_Alternative = UserServices.getUser().getBonus().getAlternative();
+    this.bonus_BiblicalReference = UserServices.getUser().getBonus().getBiblicalReference();
+    this.bonus_Time = UserServices.getUser().getBonus().getTime();
   }
 
   ionViewWillLeave(){
     // Pára o cronômetro
     this.run_stopWatch = false;
+
+    // Grava as alterações no usuário
+    // Salva os bônus
+    let newUserBonus: User.Bonus = UserServices.getUser().getBonus();
+    newUserBonus.setAlternative(this.bonus_Alternative);
+    newUserBonus.setBiblicalReference(this.bonus_BiblicalReference);
+    newUserBonus.setTime(this.bonus_Time);
+    UserServices.getUser().setBonus(newUserBonus);
+
+    // Salva a pontuação e a data do último jogo
+    UserServices.getUser().addScore(this.match.score);
+    UserServices.getUser().setLastGame(new Date(Date.now()));
   }
 
   getStopWatchImage(){

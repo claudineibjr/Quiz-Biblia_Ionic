@@ -4,10 +4,10 @@ import 'rxjs/add/operator/take';
 
 import { User } from "../model/User";
 
-export class UsuarioService{
+export class UserServices{
 
     // Singleton implementation
-    private static _instance: UsuarioService;
+    private static _instance: UserServices;
     public static get Instance(){
         return this._instance || (this._instance = new this());
     }
