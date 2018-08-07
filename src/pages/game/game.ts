@@ -437,8 +437,8 @@ export class GamePage {
   }
 
   verifySequenceQuestions(): void{
-    // 10 questões seguidas (1 aleatório)
-    // 5 difíceis seguidas (1 aleatório)
+    // 5 questões seguidas (1 aleatório)
+    // 3 difíceis seguidas (1 aleatório)
 
     if (this.match.hit >= Parameters.HITS_POWERUP) {
         this.winPowerUP();
@@ -490,7 +490,7 @@ export class GamePage {
   help_More5Seconds(){
     if (this.bonus_Time > 0){
       if (this.run_stopWatch)
-        this.time_Left_Question += 5;
+        this.time_Left_Question += Parameters.PLUS_TIME;
 
       // Decrementa o bônus
       this.bonus_Time -= 1; 
@@ -498,37 +498,41 @@ export class GamePage {
   }
 
   winPowerUP(){
-    /*
-        Random random = new Random();
+    // Função responsável por sortear PowerUP para o usuário
+    
+    // Sorteia o PowerUP
+    let aleatoryPowerUP: number = Math.floor(Math.random() * 3);
 
-        int powerUPSorteado = random.nextInt(3);
+    // Criação da mensagem avisando o usuário do PowerUP
+    let message: string = 'Parabéns, você ganhou um PowerUP de ';
 
-        String mensagem = "Parabéns, você ganhou 1 PowerUP de ";
+    // Verifica o PowerUP ganho
+    switch(aleatoryPowerUP){
+      case 0:{
+        message += 'referência bíblica.';
+        this.bonus_BiblicalReference += Parameters.POWER_UP_GAME;
+        break;
+      }
+      case 1:{
+        message += 'eliminação de alternativa incorreta.';
+        this.bonus_Alternative += Parameters.POWER_UP_GAME;
+        break;
+      }
+      case 2:{
+        message += 'tempo.';
+        this.bonus_Time += Parameters.POWER_UP_GAME;
+        break;
+      }
+    }
 
-        switch (powerUPSorteado) {
-            case 0: {
-                mensagem += "tempo.";
-                usuario.getBonus().setBonusTempo(1);
-                break;
-            }
+    // Exibição da mensagem
+    let toastMessage = this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
 
-            case 1: {
-                mensagem += "eliminação de alternativa incorreta.";
-                usuario.getBonus().setBonusAlternativa(1);
-                break;
-            }
+    toastMessage.present();
 
-            case 2: {
-                mensagem += "exibição da referência bíblia.";
-                usuario.getBonus().setBonusReferenciaBiblica(1);
-                break;
-            }
-        }
-
-        Snackbar.make(findViewById(R.id.activity_jogo), mensagem, Snackbar.LENGTH_LONG).show();
-
-        FirebaseDB.getUsuarioReferencia().child(usuario.getUid()).setValue(usuario);    
-    */
   }
 
 }

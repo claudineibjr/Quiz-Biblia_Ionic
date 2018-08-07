@@ -35,7 +35,5 @@ export class ProfilePage {
     this.user_Bonus_BiblicalReference = UserServices.getUser().getBonus().getBiblicalReference();
     this.user_Bonus_Time = UserServices.getUser().getBonus().getTime();
     this.user_Bonus_LastReceived = UserServices.getUser().getBonus().getLastBonusReceived();
-    console.log('user_Bonus_LastReceived');
-    console.log(this.user_Bonus_LastReceived);
   }
 }
