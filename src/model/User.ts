@@ -82,20 +82,24 @@ export module User{
             
         }
 
-        public getTime(): number        {return this.time;}
-        public setTime(time: number)    {this.time = time;}
-        public decTime(): void          {this.time -= 1;}
+        public getTime(): number                {return this.time;}
+        public setTime(time: number)            {this.time = time;}
+        public decTime(): void                  {this.time -= 1;}
+        public addTime(timeToAdd: number): void {this.time += timeToAdd;}
 
-        public getAlternative(): number             {return this.alternative;}
-        public setAlternative(alternative: number)  {this.alternative = alternative;}
-        public decAlternative(): void               {this.alternative -= 1;}
+        public getAlternative(): number                         {return this.alternative;}
+        public setAlternative(alternative: number)              {this.alternative = alternative;}
+        public decAlternative(): void                           {this.alternative -= 1;}
+        public addAlternative(alternativeToAdd: number): void   {this.alternative += alternativeToAdd;}
 
-        public getBiblicalReference(): number                   {return this.biblicalReference;}
-        public setBiblicalReference(biblicalReference: number)  {this.biblicalReference = biblicalReference;}
-        public decBiblicalReference(): void                     {this.biblicalReference -= 1;}
+        public getBiblicalReference(): number                               {return this.biblicalReference;}
+        public setBiblicalReference(biblicalReference: number)              {this.biblicalReference = biblicalReference;}
+        public decBiblicalReference(): void                                 {this.biblicalReference -= 1;}
+        public addBiblicalReference(biblicalReferenceToAdd: number): void   {this.biblicalReference += biblicalReferenceToAdd;}
 
-        public getLastBonusReceived(): Date                         {return this.lastBonusReceived;}
-        public setLastBonusReceived(lastBonusReceived: Date): void  {this.lastBonusReceived = lastBonusReceived;}
+        public getLastBonusReceived(): Date                             {return this.lastBonusReceived;}
+        public setLastBonusReceived(lastBonusReceivedToAdd: Date): void {this.lastBonusReceived = lastBonusReceivedToAdd;}
+        
     }
 
     export class Preferences{
