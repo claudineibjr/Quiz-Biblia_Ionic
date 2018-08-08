@@ -144,6 +144,9 @@ export class GamePage {
     // Pára o cronômetro
     this.run_stopWatch = false;
 
+    // Pára a reprodução do áudio caso esteja rodando
+    this.nativeAudio.stop('tick_tack_last5Seconds');
+
     //Variável responsável por identificar se o usuário acertou ou errou
     let correct: boolean;
     correct = selectedAlternative == this.question.getAnswer();
