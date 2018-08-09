@@ -17,9 +17,14 @@
         <ion-input type="password" [(ngModel)]="password"></ion-input>
       </ion-item>
 
+      <ion-item>
+        <ion-label>Manter-me conectado</ion-label>
+        <ion-checkbox [(ngModel)]='keepConnected'></ion-checkbox>
+      </ion-item>
+
     </ion-list>
 
-    <br><br>
+    <br>
     <button ion-button block (click)="doLogin()">Login</button>
     <button ion-button block (click)="facebookLogin()">Login com o Facebook</button>
     <button ion-button block (click)="doRegister()">Cadastro</button>

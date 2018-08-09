@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavParams, AlertController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { AboutPage } from '../about/about';
 import { ProfilePage } from '../profile/profile';
@@ -20,12 +23,12 @@ import { Parameters } from '../../model/Parameters';
 export class MainPage {
 
   tab1Root = GameParametersPage;
-  tab2Root = AboutPage;
-  tab3Root = ProfilePage;
-  tab4Root = HelpPage;
+  tab2Root = ProfilePage;
+  tab3Root = HelpPage;
   
   constructor(public navParams: NavParams, public db: AngularFireDatabase,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public auth: AngularFireAuth,
+              public navCtrl: NavController, public storage: Storage) {
 
   }
 
@@ -82,4 +85,13 @@ export class MainPage {
     }
   }
 
+  logoff(){
+    this.auth.auth.signOut().then((logoff) => {
+      console.log('Storage removed');
+      this.storage.remove('userEmail');
+      this.storage.remove('userPass');
+
+      this.navCtrl.pop();
+    });
+  }
 }

@@ -22,6 +22,8 @@ import { Facebook } from '@ionic-native/facebook'
 
 import { NativeAudio } from '@ionic-native/native-audio';
 
+import { IonicStorageModule } from '@ionic/storage';
+
 // AF2 Settings
 export const firebaseConfig = {
   apiKey: "AIzaSyBCcwdOZ_AVVnyFxk4am2xTT3WvUJcEWN8",
@@ -47,7 +49,8 @@ export const firebaseConfig = {
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule, // imports firebase/database, only needed for database features
-    AngularFireAuthModule // imports firebase/auth, only needed for auth features    
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features    
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

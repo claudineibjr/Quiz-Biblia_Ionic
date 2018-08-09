@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { MainPage } from '../main/main';
+import { Storage } from '@ionic/storage';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ToastController } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { AlertController } from 'ionic-angular';
 import firebase from 'firebase';
+
 import { UserServices } from '../../services/UserServices';
+import { MainPage } from '../main/main';
 import { User } from '../../model/User';
 
 @Component({
@@ -19,12 +21,26 @@ export class LoginPage {
 
   email: string;
   password: string;
+  keepConnected: boolean = true;
 
   userProfile: any = null;
 
   constructor(public navCtrl: NavController, public auth: AngularFireAuth, 
               public toastCtrl: ToastController, private facebook: Facebook,
-              public alertCtrl: AlertController, public db: AngularFireDatabase) {
+              public alertCtrl: AlertController, public db: AngularFireDatabase,
+              public storage: Storage) {
+  }
+
+  ionViewDidLoad(){
+    // Verifica se o e-mail e a senha estão no cache, caso sim, tenta o login
+    this.storage.get('userEmail').then((userEmail) => {
+      this.storage.get('userPass').then((userPass) => {
+        if (userEmail != undefined && userEmail != null && userPass != undefined && userPass != null){
+          console.log('Storage received');
+          this.doLogin(userEmail, userPass);
+        }
+      });
+    });
   }
 
   facebookLogin(){
@@ -151,6 +167,17 @@ export class LoginPage {
     if (email.length > 0 && password.length > 0){
       UserServices.login(this.auth, email, password)
       .then((userUID: string) => {
+        // Caso o usuário queira manter conectado, salva as informações
+        if (this.keepConnected){
+          console.log('Storage setted');
+          this.storage.set('userEmail', email);
+          this.storage.set('userPass', password);
+        }else{
+          console.log('Storage removed');
+          this.storage.remove('userEmail');
+          this.storage.remove('userPass');
+        }
+
         // Login efetuado com sucesso, vai para a próxima tela
         this.navCtrl.push(MainPage, {
           userUID: userUID
