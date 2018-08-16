@@ -22,7 +22,7 @@ export class GamePage {
   time_Left_Question: number;
   run_stopWatch: boolean;
   alternatives_disabled: number;
-  alternatives_enabled: Array<boolean> = [];
+  alternatives_enabled: Array<boolean> = [false, false, false, false];
   alternatives_images: Array<String> = [];
   
   bonus_Alternative: number;
@@ -75,9 +75,6 @@ export class GamePage {
     // Seta o frame das imagens das alternativas
     this.setImageInAllAlternatives(true);
 
-    // Inicia todas as alternativas como habilitadas
-    this.setVisibilityInAllAlternatives();
-
     // Inicia o cronômetro
     this.run_stopWatch = true;
     this.startTimer();
@@ -106,20 +103,24 @@ export class GamePage {
 
     // Salva as alterações no banco de dados
     UserServices.updateUserInDb(this.db, UserServices.getUser());
+
+    // Pára a reprodução do áudio caso esteja rodando
+    this.nativeAudio.stop('tick_tack_last5Seconds');
   }
 
-  getStopWatchImage(){
+  getStopWatchImage(): string{
     if (this.time_Left_Question > 20)
       return 'assets/img/stopwatch/0-20.png';
     else
       return 'assets/img/stopwatch/' + (20 - this.time_Left_Question).toString() + '-20.png';
   }
 
-  startTimer(){
+  startTimer(): void{
     // Função responsável por passar o tempo restante para responder a questão
     setTimeout(() => {
       // Só decrementa caso o contador esteja rodando
       if (this.run_stopWatch){
+        console.log('Rodando cronômetro');
         this.time_Left_Question -= 1;
 
         // Faltando 5 segundos começa o som do tick tack
@@ -138,11 +139,14 @@ export class GamePage {
 
   }
 
-  try(selectedAlternative: number){
+  try(selectedAlternative: number): void{
     // Função acionada no fim da questão ou quando o usuário seleciona a opção   
 
     // Pára o cronômetro
     this.run_stopWatch = false;
+
+    // Seta todas as alternativas como invisíveis
+    this.setVisibilityInAllAlternatives(false);
 
     // Pára a reprodução do áudio caso esteja rodando
     this.nativeAudio.stop('tick_tack_last5Seconds');
@@ -246,7 +250,7 @@ export class GamePage {
 
   }
 
-  showAnswer(correct: boolean, textBiblical: string, points: number){
+  showAnswer(correct: boolean, textBiblical: string, points: number): void{
     // Exibe uma mensagem com a pontuação, o resultado da questão e texto bíblico
 
     let alert = this.alertCtrl.create({
@@ -270,7 +274,7 @@ export class GamePage {
 
   }
 
-  playSound(correct: boolean){
+  playSound(correct: boolean): void{
     // Reproduz som
     if (correct){      
       this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
@@ -279,11 +283,22 @@ export class GamePage {
     }
   }
 
-  setVisibilityInAllAlternatives(){
-    this.alternatives_enabled = [true, true, true, true];
+  setVisibilityInAllAlternatives(visibility: boolean): void{
+    setTimeout(() => {
+      let iCount: number = 0;
+      while (this.alternatives_enabled[iCount] == visibility && iCount <= 3)
+        iCount += 1;
+
+      if (iCount <= 3){
+        this.alternatives_enabled[iCount] = visibility;
+        this.setVisibilityInAllAlternatives(visibility);
+      }else if (visibility)
+        this.run_stopWatch = true;
+
+    }, 100);
   }
 
-  setImageInAllAlternatives(resetDefault: boolean, urlImage: String = ''){
+  setImageInAllAlternatives(resetDefault: boolean, urlImage: String = ''): void{
     if (resetDefault)
       urlImage = 'assets/img/quadro_alternativa.png';
 
@@ -297,11 +312,11 @@ export class GamePage {
     }
   }
 
-  setImageinAlternative(indexAlternative: number, urlImage: String){
+  setImageinAlternative(indexAlternative: number, urlImage: String): void{
     this.alternatives_images[indexAlternative] = urlImage;
   }
 
-  paintAlternative(correct: boolean, answer: number, selectedAlternative: number){
+  paintAlternative(correct: boolean, answer: number, selectedAlternative: number): void{
     // Pinta a alternativa de acordo com a resposta correta ou não
 
     if (selectedAlternative == -1){
@@ -315,7 +330,7 @@ export class GamePage {
     }
   }
 
-  getQuestion(){
+  getQuestion(): void{
     //Função acionada ao buscar uma questão aleatória
 
     // Carrega novamente o tempo restante para responder à questão
@@ -361,14 +376,11 @@ export class GamePage {
                                     <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
                                     testamento, secaoBiblia, referenciaBiblica);
 
-      // Reseta as alternativas visíveis
-      this.setVisibilityInAllAlternatives();
-
       // Reseta a imagem utilizada na alternativa
       this.setImageInAllAlternatives(true);
 
-      // Habilita o cronômetor a rodar novamente
-      this.run_stopWatch = true;
+      // Reseta as alternativas visíveis
+      this.setVisibilityInAllAlternatives(true);
     });
   }
 
@@ -453,7 +465,7 @@ export class GamePage {
     }    
   }
 
-  help_BiblicalReference(){
+  help_BiblicalReference(): void{
     if (this.bonus_BiblicalReference > 0){
       let alert = this.alertCtrl.create({
         title: ('Referência bíblica'),
@@ -467,7 +479,7 @@ export class GamePage {
     }
   }
 
-  help_DeleteIncorretAnswer(){
+  help_DeleteIncorretAnswer(): void{
     if (this.bonus_Alternative > 0){
       if (this.alternatives_disabled < 3) {
         //Gera um número aleatório entre 0 e 3, que será a alternativa a ser eliminada
@@ -490,7 +502,7 @@ export class GamePage {
     }
   }
 
-  help_More5Seconds(){
+  help_More5Seconds(): void{
     if (this.bonus_Time > 0){
       if (this.run_stopWatch)
         this.time_Left_Question += Parameters.PLUS_TIME;
@@ -500,7 +512,7 @@ export class GamePage {
     }
   }
 
-  winPowerUP(){
+  winPowerUP(): void{
     // Função responsável por sortear PowerUP para o usuário
     
     // Sorteia o PowerUP

@@ -60,7 +60,7 @@ page-game {
 /* ---------------------------------------------------------- */
 /* Classes que servem para a criação do quadro com a questão */
 /* --------------------------------------------------------- */
-$frameQuestionHeight: 165px;
+$frameQuestionHeight: 140px;
 #frameQuestion{
     width: 100%;
     height: $frameQuestionHeight;
@@ -69,7 +69,7 @@ $frameQuestionHeight: 165px;
 /* --------------------------------------------------------------- */
 /* Classes que servem para a criação do quadro com as alternativas */
 /* --------------------------------------------------------------- */
-$frameAlternativeHeight: 65px;
+$frameAlternativeHeight: 50px;
 .frameAlternative{
     width: 100%;
     height: $frameAlternativeHeight;
@@ -140,11 +140,14 @@ $containerAlternativesMarginTop: 5px;
 }
 
 #txtQuestion{
-    font-size: 20px;
+    font-size: 18px;
+    width: 100%;
+    padding-right: 14px;
+    text-align: center !important;
 }
 
 #txtAlternative{
-    font-size: 16px;
+    font-size: 14px;
     width: 100%;
     height: 100%;
     padding-right: 5%;
@@ -153,7 +156,7 @@ $containerAlternativesMarginTop: 5px;
 #txtLevelQuestion, #txtSectionQuestion{
     width: 100%;
     padding-right: 5%;
-    top: 71%;
+    top: 65%;
     font-size: 12px;
 }
 
