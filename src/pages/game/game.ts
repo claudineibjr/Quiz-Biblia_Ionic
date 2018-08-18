@@ -9,6 +9,7 @@ import { Question } from '../../model/Question';
 import { Parameters } from '../../model/Parameters';
 import { UserServices } from '../../services/UserServices';
 import { User } from '../../model/User';
+import { QuestionServices } from '../../services/QuestionServices';
 
 @Component({
   selector: 'page-game',
@@ -31,7 +32,7 @@ export class GamePage {
 
   image: Array<String> = [];
 
-  constructor(  public navCtrl: NavController, public db: AngularFireDatabase,
+  constructor(  public navCtrl: NavController, public database: AngularFireDatabase,
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio,
                 public toastCtrl: ToastController) {
     
@@ -102,7 +103,7 @@ export class GamePage {
     UserServices.getUser().setLastGame(new Date(Date.now()));
 
     // Salva as alterações no banco de dados
-    UserServices.updateUserInDb(this.db, UserServices.getUser());
+    UserServices.updateUserInDb(this.database, UserServices.getUser());
 
     // Pára a reprodução do áudio caso esteja rodando
     this.nativeAudio.stop('tick_tack_last5Seconds');
@@ -120,7 +121,6 @@ export class GamePage {
     setTimeout(() => {
       // Só decrementa caso o contador esteja rodando
       if (this.run_stopWatch){
-        console.log('Rodando cronômetro');
         this.time_Left_Question -= 1;
 
         // Faltando 5 segundos começa o som do tick tack
@@ -339,116 +339,16 @@ export class GamePage {
     // Inicia a variável responsável por controlar o número de alternativas que foram desabilitadas
     this.alternatives_disabled = 0;
 
-    // Gera um número aleatório para buscar a questão
-    let questionNumber: number;
-    questionNumber = this.aleatoryNumberQuestion();
-
-    //Cria as variáveis locais apenas para armazenar temporariamente os dados antes de criar a questão
-    let alternatives: Array<String>,
-        idQuestion: number, strQuestion: string, answer: string, textBiblical: string, 
-        levelQuestion: number, testamento: string, secaoBiblia: string, referenciaBiblica: string;
-
-    //Busca a questão selecionada no banco de dados
-    this.db.list('/question/' + questionNumber, { preserveSnapshot: true }).subscribe(snapshots => {
-      snapshots.forEach(snapshot =>{
-
-        switch(snapshot.key){
-          case 'alternatives': {      alternatives = snapshot.val();      break;  }
-          case 'answer': {            answer = snapshot.val();            break;  }
-          case 'idQuestion': {        idQuestion = snapshot.val();        break;  }
-          case 'levelQuestion': {     levelQuestion = snapshot.val();     break;  }
-          case 'question': {          strQuestion = snapshot.val();       break;  }
-          case 'referenciaBiblica': { referenciaBiblica = snapshot.val(); break;  }
-          case 'secaoBiblia': {       secaoBiblia = snapshot.val();       break;  }
-          case 'testamento': {        testamento = snapshot.val();        break;  }
-          case 'textBiblical': {      textBiblical = snapshot.val();      break;  }
-        }
-      });
-
-      // Chamada de função que troca a ordem das questões e também altera o índice da resposta correta para identificá-la posteriormente
-      let alternatives_and_answer: Array<Object> = [];
-      alternatives_and_answer.push(answer);
-      alternatives_and_answer.push(alternatives);
-      alternatives_and_answer = this.randomizeAlternatives(alternatives_and_answer);
-
-      //Instancia a nova questão
-      this.question = new Question( idQuestion, strQuestion, parseInt(<string> alternatives_and_answer[0]), 
-                                    <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
-                                    testamento, secaoBiblia, referenciaBiblica);
+    QuestionServices.getQuestion(this.database, ['dificulty', '3', 'section', 'pentateuco']).then(question => {
+      this.question = question;
 
       // Reseta a imagem utilizada na alternativa
       this.setImageInAllAlternatives(true);
 
       // Reseta as alternativas visíveis
       this.setVisibilityInAllAlternatives(true);
+
     });
-  }
-
-  aleatoryNumberQuestion(): number{
-    let maxNumberQuestion_Debug: number = 129;
-    return Math.floor(Math.random() * (maxNumberQuestion_Debug - 1)) + 1;
-  }
-
-  randomizeAlternatives(alternatives_and_answer: Array<Object>): Array<Object>{
-    let randomizedList: Array<number> = [];
-    let transitions_To: Array<Number> = [];
-
-    for (let iCount: number = 0; iCount <=3; iCount++){
-
-      let randomOk: boolean = false;
-
-      // Enquanto não tiver sorteado aleatório, realiza um novo sorteio
-      while (!randomOk){
-        
-        // Gera o número aleatório entre 0 e 3
-        let randomizedNumber: number = Math.floor(Math.random() * 4);
-
-        // Verifica se a lista está vazia, caso esteja, insere, caso não esteja, verifica se o número sorteado está na lista
-        if (randomizedList.length > 0){
-
-          //Verifica se o número que foi sorteado já não havia sido inserido na lista
-          if (!this.existOnList(randomizedList, randomizedNumber)){
-            // Insere o número aleatório na lista
-            transitions_To.push(randomizedNumber);
-            randomizedList.push(randomizedNumber);
-            randomOk = true;
-            
-          }
-        }else{
-          // Insere o número aleatório na lista
-          transitions_To.push(randomizedNumber);
-          randomizedList.push(randomizedNumber);
-          randomOk = true;
-        }
-      }
-    }
-
-    // Verifica para qual alternativa na ordem ficou a resposta correta
-    for (let iCount: number = 0; iCount <= 3; iCount++){
-      if (transitions_To[iCount] == alternatives_and_answer[0]){
-        alternatives_and_answer[0] = iCount;
-        break;
-      }
-    }
-
-    // Utiliza um array auxiliar para alterar as alternativas
-    let alternatives_aux: Array<string> = [];
-    for (let iCount: number = 0; iCount <= 3; iCount++){
-      alternatives_aux[iCount] = alternatives_and_answer[1][randomizedList[iCount]];
-    }
-    alternatives_and_answer[1] = alternatives_aux;
-
-    return alternatives_and_answer;
-  }
-
-  existOnList(list: Array<Object>, object: Object): boolean{
-    // Verifica se o objeto passado como parâmetro existe na lista
-    for (let i: number = 0; i < list.length; i++){
-      if (list[i] == object)
-        return true;
-    }
-
-    return false;
   }
 
   verifySequenceQuestions(): void{

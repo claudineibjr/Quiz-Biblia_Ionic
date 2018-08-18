@@ -58,6 +58,7 @@
     "angularfire2": "^4.0.0-rc0",
     "firebase": "^3.9.0",
     "ionic": "^3.7.0",
+    "ts-nameof": "^1.0.0",
     "typescript": "2.3.3",
     "typescript-tools": "^0.3.1"
   },

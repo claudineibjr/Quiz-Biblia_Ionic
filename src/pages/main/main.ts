@@ -15,6 +15,7 @@ import { User } from '../../model/User';
 
 import { UserServices } from '../../services/UserServices';
 import { Parameters } from '../../model/Parameters';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-main',
@@ -26,7 +27,7 @@ export class MainPage {
   tab2Root = ProfilePage;
   tab3Root = HelpPage;
   
-  constructor(public navParams: NavParams, public db: AngularFireDatabase,
+  constructor(public navParams: NavParams, public database: AngularFireDatabase,
               public alertCtrl: AlertController, public auth: AngularFireAuth,
               public navCtrl: NavController, public storage: Storage) {
 
@@ -34,12 +35,24 @@ export class MainPage {
 
   ionViewDidEnter(){
     if (UserServices.getUser() == null){
-      UserServices.getDbUser(this.db, this.navParams.get('userUID')).then((user) => {
+      UserServices.getDbUser(this.database, this.navParams.get('userUID')).then((user) => {
         this.verifyBonus();
       });
     }else{
       this.verifyBonus();
     }
+
+    let oi: number = 1;
+    if (oi == 1){
+      this.database.list('/question/').subscribe(questions =>{
+        questions.forEach(question => {
+          this.database.object('/question_filter/dificulty/' + question.levelQuestion).$ref.push(question.idQuestion);
+          this.database.object('/question_filter/section/' + question.secaoBiblia).$ref.push(question.idQuestion);
+          this.database.object('/question_filter/dificulty_section/' + question.levelQuestion + '_' + question.secaoBiblia).$ref.push(question.idQuestion);
+        });
+      });
+    }
+
   }
 
   verifyBonus(){
