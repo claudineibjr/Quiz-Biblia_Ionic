@@ -41,18 +41,6 @@ export class MainPage {
     }else{
       this.verifyBonus();
     }
-
-    let oi: number = 1;
-    if (oi == 1){
-      this.database.list('/question/').subscribe(questions =>{
-        questions.forEach(question => {
-          this.database.object('/question_filter/dificulty/' + question.levelQuestion).$ref.push(question.idQuestion);
-          this.database.object('/question_filter/section/' + question.secaoBiblia).$ref.push(question.idQuestion);
-          this.database.object('/question_filter/dificulty_section/' + question.levelQuestion + '_' + question.secaoBiblia).$ref.push(question.idQuestion);
-        });
-      });
-    }
-
   }
 
   verifyBonus(){

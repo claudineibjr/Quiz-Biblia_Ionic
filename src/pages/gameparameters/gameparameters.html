@@ -6,6 +6,32 @@
 
 <ion-content padding>
   
-  <button ion-button (click) = "play()">Jogar</button>
+  <ion-item>
+    <ion-label>Dificuldade</ion-label>
+    <ion-select [(ngModel)]="questionDificulty">
+      <ion-option value="0">Todas as dificuldades</ion-option>
+      <ion-option value="1">Fácil</ion-option>
+      <ion-option value="2">Médio</ion-option>
+      <ion-option value="3">Difícil</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Seção da bíblia</ion-label>
+    <ion-select [(ngModel)]="questionSection">
+      <ion-option value="0">Todas as seções</ion-option>
+      <ion-option value="pentateuco">Pentateuco</ion-option>
+      <ion-option value="historia_1">História (A.T)</ion-option>
+      <ion-option value="poesia">Poesia</ion-option>
+      <ion-option value="profetas_maiores">Profetas Maiores</ion-option>
+      <ion-option value="profetas_maiores">Profetas Menores</ion-option>
+      <ion-option value="evangelhos">Evangelhos</ion-option>
+      <ion-option value="historia_2">História (N.T)</ion-option>      
+      <ion-option value="cartas">Cartas</ion-option>
+      <ion-option value="profecia">Profecia</ion-option>          
+    </ion-select>
+  </ion-item>
+
+  <button ion-button block (click) = "play()">Jogar</button>
 
 </ion-content>
