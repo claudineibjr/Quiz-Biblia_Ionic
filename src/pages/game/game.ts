@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AlertController } from 'ionic-angular';
 import { NativeAudio } from '@ionic-native/native-audio';
@@ -34,7 +34,7 @@ export class GamePage {
 
   constructor(  public navCtrl: NavController, public database: AngularFireDatabase,
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio,
-                public toastCtrl: ToastController) {
+                public toastCtrl: ToastController, public navParams: NavParams) {
     
     //Cria as alternativas em branco para que apareça o espaço em branco
     let auxAlternatives: Array<String> = [];
@@ -339,7 +339,7 @@ export class GamePage {
     // Inicia a variável responsável por controlar o número de alternativas que foram desabilitadas
     this.alternatives_disabled = 0;
 
-    QuestionServices.getQuestion(this.database, ['dificulty', '3', 'section', 'pentateuco']).then(question => {
+    QuestionServices.getQuestion(this.database, this.navParams.get('parametersToFindQuestion')).then(question => {
       this.question = question;
 
       // Reseta a imagem utilizada na alternativa

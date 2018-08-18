@@ -43,18 +43,16 @@ export class QuestionServices{
     public static enumDificulty_Number = enumDificulty_Number;
     public static enumDificulty_String = enumDificulty_String;*/
 
-    public static getQuestion(database: AngularFireDatabase, parameters: Array<string> = []): Promise<Question>{
+    public static getQuestion(database: AngularFireDatabase, parameters: Array<string>): Promise<Question>{
         return new Promise<Question> ((resolve, reject) => {
-            let numberQuestion: number = this.aleatoryNumberQuestion();
-            let questionToFind: any = '';
-            let parametersToFind: string = '';
             let rootSearch: string = '';
 
-            // Verifica os parâmetros passados e então monta a query com base neles (Podendo buscar só por id da questão, por id e pelo nível, pelo id e pela seção, pelo id, pelo nível e pela seção)
-            if (parameters.length == 0){
-                questionToFind = numberQuestion;
-                parametersToFind = 'idQuestion';
-            }else if (parameters.length == 2){
+            // Verifica os parâmetros passados e então monta a query com base neles
+            // (    Podendo buscar aleatoriamente, 
+            //      aleatoriamente pelo nível,
+            //      aleatoriamente pela seção, 
+            //      aleatoriamente pelo nível e pela seção)
+            if (parameters.length == 2){
                 rootSearch = parameters[0]; //dificulty | section
                 rootSearch += '/' + parameters[1]; // Nível de dificuldade a ser buscado ou Seção a ser buscada
             }else if (parameters.length == 4){
@@ -62,31 +60,42 @@ export class QuestionServices{
                 rootSearch += '/' + parameters[1] + '_' + parameters[3]; // Nível de dificuldade a ser buscado_Seção a ser buscada
             }
 
-            // Busca o id da questão
-            let numberRootToBeSorted: number, idQuestion: number;
-            database.list('/question_filter/' + rootSearch)
-            .subscribe(questionsIdentifiers => {
-                let sizeOfRoot: number = questionsIdentifiers.length;
-                numberRootToBeSorted = Math.floor(Math.random() * (sizeOfRoot - 1))
-                idQuestion = questionsIdentifiers[numberRootToBeSorted].$value;
+            if (parameters.length > 0){
+                // Busca o id da questão
+                let numberRootToBeSorted: number, idQuestion: number;
+                database.list('/question_filter/' + rootSearch)
+                .subscribe(questionsIdentifiers => {
+                    let sizeOfRoot: number = questionsIdentifiers.length;
+                    numberRootToBeSorted = Math.floor(Math.random() * (sizeOfRoot - 1))
+                    idQuestion = questionsIdentifiers[numberRootToBeSorted].$value;
 
-                // Busca a questão selecionada no banco de dados
-                database.list('/question/', {
-                    query: {
-                        orderByChild: 'idQuestion',
-                        equalTo: idQuestion,
-                        limitToFirst: 1
-                    }
-                }).subscribe(questions => {
-                    if (questions.length == 0){
-                        console.log('Busca | ' + new Date(Date.now()) + ' |  Procura mais');
-                        return this.getQuestion(database, parameters);
-                    }else{
-                        resolve(this.prepareQuestion(questions[0]));
-                    }
+                    this.getQuestionById(idQuestion, database).then(question => {
+                        resolve(this.prepareQuestion(question));
+                    });
                 });
-            });
+            }else{
+                // Busca aleatoriamente
+                let numberQuestion: number = this.aleatoryNumberQuestion();
+                this.getQuestionById(numberQuestion, database).then(question => {
+                    resolve(this.prepareQuestion(question));
+                });
+            }
         });
+    }
+
+    private static getQuestionById(idQuestion: number, database: AngularFireDatabase): Promise<any>{
+        return new Promise((resolve, reject) => {
+            // Busca a questão selecionada no banco de dados
+            database.list('/question/', {
+                query: {
+                    orderByChild: 'idQuestion',
+                    equalTo: idQuestion,
+                    limitToFirst: 1
+                }
+            }).subscribe(questions => {
+                resolve(this.prepareQuestion(questions[0]));
+            });
+        })
     }
 
     private static prepareQuestion(question: any): Question{
@@ -112,9 +121,9 @@ export class QuestionServices{
         alternatives_and_answer = this.randomizeAlternatives(alternatives_and_answer);
 
         //Instancia a nova questão
-        return new Question( idQuestion, strQuestion, parseInt(<string> alternatives_and_answer[0]), 
-                                    <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
-                                    testamento, secaoBiblia, referenciaBiblica);        
+        return new Question(    idQuestion, strQuestion, parseInt(<string> alternatives_and_answer[0]), 
+                                <Array<string>> alternatives_and_answer[1], textBiblical, levelQuestion, 
+                                testamento, secaoBiblia, referenciaBiblica);
     }
 
     private static randomizeAlternatives(alternatives_and_answer: Array<Object>): Array<Object>{

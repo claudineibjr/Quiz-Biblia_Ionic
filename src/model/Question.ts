@@ -37,12 +37,22 @@ export class Question {
     public getSecaoBiblia(): string{            return this.secaoBiblia;        }
     public getLevelQuestion_string(): string{
         switch(this.levelQuestion){
-            case 1:
-                return 'Fácil';
-            case 2:
-                return 'Médio';
-            case 3:
-                return 'Difícil';
+            case 1: return 'Fácil';
+            case 2: return 'Médio';
+            case 3: return 'Difícil';
+        }
+    }
+    public getSecaoBiblia_string(): string{
+        switch(this.secaoBiblia){
+            case 'pentateuco':          return 'Pentateuco';
+            case 'historia_1':          return 'História (A. T.)';
+            case 'poesia':              return 'Poesia';
+            case 'profetas_maiores':    return 'Profetas Maiores';
+            case 'profetas_menores':    return 'Profetas Menores';
+            case 'evangelhos':          return 'Evangelhos';
+            case 'historia_2':          return 'História (N. T.)';
+            case 'cartas':              return 'Cartas';
+            case 'profecia':            return 'Profecia';
         }
     }
     
