@@ -124,7 +124,7 @@ export class GamePage {
         this.time_Left_Question -= 1;
 
         // Faltando 5 segundos começa o som do tick tack
-        if (this.time_Left_Question == 5)
+        if (this.time_Left_Question == 5 && UserServices.getUser().getPreferences().getSound())
           this.nativeAudio.play('tick_tack_last5Seconds', () => console.log("Rodou"));
 
         // Acabou o tempo, o usuário não conseguiu responder a questão
@@ -162,7 +162,8 @@ export class GamePage {
     this.match.answers.push(new game.Answer(correct, this.question.getLevelQuestion()));
 
     // Reproduz som
-    this.playSound(correct);
+    if (UserServices.getUser().getPreferences().getSound())
+      this.playSound(correct);
 
     // Pinta a alternativa de acordo com a resposta correta ou não
     this.paintAlternative(correct, this.question.getAnswer(), selectedAlternative);
@@ -275,11 +276,13 @@ export class GamePage {
   }
 
   playSound(correct: boolean): void{
-    // Reproduz som
-    if (correct){      
-      this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
-    }else{
-      this.nativeAudio.play('wrongAudio', () => console.log("Rodou"));
+    if (UserServices.getUser().getPreferences().getSound()){
+      // Reproduz som
+      if (correct){      
+        this.nativeAudio.play('correctAudio', () => console.log("Rodou"));
+      }else{
+        this.nativeAudio.play('wrongAudio', () => console.log("Rodou"));
+      }
     }
   }
 
