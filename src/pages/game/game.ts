@@ -10,6 +10,7 @@ import { Parameters } from '../../model/Parameters';
 import { UserServices } from '../../services/UserServices';
 import { User } from '../../model/User';
 import { QuestionServices } from '../../services/QuestionServices';
+import { Vibration } from '../../../node_modules/@ionic-native/vibration';
 
 @Component({
   selector: 'page-game',
@@ -34,7 +35,8 @@ export class GamePage {
 
   constructor(  public navCtrl: NavController, public database: AngularFireDatabase,
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio,
-                public toastCtrl: ToastController, public navParams: NavParams) {
+                public toastCtrl: ToastController, public navParams: NavParams,
+                public vibration: Vibration) {
     
     //Cria as alternativas em branco para que apareça o espaço em branco
     let auxAlternatives: Array<String> = [];
@@ -107,6 +109,10 @@ export class GamePage {
 
     // Pára a reprodução do áudio caso esteja rodando
     this.nativeAudio.stop('tick_tack_last5Seconds');
+
+    // Pára de vibrar caso esteja vibrando
+    this.vibration.vibrate(0);
+
   }
 
   getStopWatchImage(): string{
@@ -126,6 +132,10 @@ export class GamePage {
         // Faltando 5 segundos começa o som do tick tack
         if (this.time_Left_Question == 5 && UserServices.getUser().getPreferences().getSound())
           this.nativeAudio.play('tick_tack_last5Seconds', () => console.log("Rodou"));
+
+        // Faltando 5 segundos começa a vibrar
+        if (this.time_Left_Question <= 5 && UserServices.getUser().getPreferences().getVibration())
+          this.vibration.vibrate(600);
 
         // Acabou o tempo, o usuário não conseguiu responder a questão
         if (this.time_Left_Question == 0){
@@ -150,6 +160,9 @@ export class GamePage {
 
     // Pára a reprodução do áudio caso esteja rodando
     this.nativeAudio.stop('tick_tack_last5Seconds');
+
+    // Pára de vibrar caso esteja vibrado
+    this.vibration.vibrate(0);
 
     //Variável responsável por identificar se o usuário acertou ou errou
     let correct: boolean;

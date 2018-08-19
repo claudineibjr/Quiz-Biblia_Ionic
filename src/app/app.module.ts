@@ -24,6 +24,8 @@ import { NativeAudio } from '@ionic-native/native-audio';
 
 import { IonicStorageModule } from '@ionic/storage';
 
+import { Vibration } from '@ionic-native/vibration';
+
 // AF2 Settings
 export const firebaseConfig = {
   apiKey: "AIzaSyBCcwdOZ_AVVnyFxk4am2xTT3WvUJcEWN8",
@@ -68,6 +70,7 @@ export const firebaseConfig = {
     SplashScreen,
     Facebook,
     NativeAudio,
+    Vibration,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
