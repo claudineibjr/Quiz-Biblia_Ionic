@@ -74,11 +74,11 @@
 
   <ion-grid style="display: inline-block; vertical-align: bottom;">
     <ion-row>
-      <ion-col> <button ion-button block color="light">Cancelar</button> </ion-col>
-      <ion-col> <button ion-button block color="default">Salvar</button> </ion-col>
+      <ion-col> <button ion-button block (click)="cancel()" color="light">Cancelar</button> </ion-col>
+      <ion-col> <button ion-button block (click)="save()" color="default">Salvar</button> </ion-col>
     </ion-row>
-    <ion-row> <button ion-button block color="danger">Resetar Conta</button>  </ion-row>
-    <ion-row> <button ion-button block color="dark">Apagar Conta</button>     </ion-row>
+    <ion-row> <button ion-button block (click)="resetAccount()" color="danger">Resetar Conta</button>  </ion-row>
+    <ion-row> <button ion-button block (click)="deleteAccount()" color="dark">Apagar Conta</button>     </ion-row>
   </ion-grid>
 
 </ion-content>

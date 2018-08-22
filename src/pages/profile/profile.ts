@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { User } from '../../model/User';
 import { UserServices } from '../../services/UserServices';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Component({
   selector: 'page-profile',
@@ -22,7 +23,7 @@ export class ProfilePage {
   user_Bonus_Time: number;
   user_Bonus_LastReceived: Date;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public database: AngularFireDatabase) {
     this.user_Email = UserServices.getUser().getEmail();
     this.user_Name = UserServices.getUser().getName();
     this.user_Score = UserServices.getUser().getScore();
@@ -36,4 +37,27 @@ export class ProfilePage {
     this.user_Bonus_Time = UserServices.getUser().getBonus().getTime();
     this.user_Bonus_LastReceived = UserServices.getUser().getBonus().getLastBonusReceived();
   }
+
+  cancel(): void{
+    this.user_Name = UserServices.getUser().getName();
+    this.user_Preferences_Sound = UserServices.getUser().getPreferences().getSound();
+    this.user_Preferences_Vibration = UserServices.getUser().getPreferences().getVibration();
+  }
+
+  save(): void{
+    UserServices.getUser().setName(this.user_Name);
+    UserServices.getUser().getPreferences().setSound(this.user_Preferences_Sound);
+    UserServices.getUser().getPreferences().setVibration(this.user_Preferences_Vibration);
+
+    UserServices.updateUserInDb(this.database, UserServices.getUser());
+  }
+
+  deleteAccount(): void{
+
+  }
+
+  resetAccount(): void{
+
+  }
+
 }
