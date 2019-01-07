@@ -35,10 +35,13 @@ export class MainPage {
 
   ionViewDidEnter(){
     if (UserServices.getUser() == null){
+      // Significa que acabou de fazer o login
       UserServices.getDbUser(this.database, this.navParams.get('userUID')).then((user) => {
         this.verifyBonus();
+        UserServices.setUser(user);
       });
     }else{
+      // Significa que o usuário já estava logado
       this.verifyBonus();
     }
   }

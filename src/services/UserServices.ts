@@ -14,6 +14,9 @@ export class UserServices{
     }
 
     private static user: User = null;
+    public static setUser(user: User): void{
+        this.user = user;
+    }
     public static getUser(): User{
         return this.user;
     }
