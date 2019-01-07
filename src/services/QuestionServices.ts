@@ -6,6 +6,7 @@ import 'rxjs/add/operator/take';
 import { Question } from "../model/Question";
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { UserServices } from './UserServices';
 
 /*enum enumSections{
     pentateuco = 'Pentateuco',
@@ -68,17 +69,28 @@ export class QuestionServices{
                     let sizeOfRoot: number = questionsIdentifiers.length;
                     numberRootToBeSorted = Math.floor(Math.random() * (sizeOfRoot - 1))
                     idQuestion = questionsIdentifiers[numberRootToBeSorted].$value;
-
-                    this.getQuestionById(idQuestion, database).then(question => {
-                        resolve(this.prepareQuestion(question));
-                    });
+                    
+                    // Se a pergunta já foi respondida anteriormente, busca uma nova pergunta
+                    if (this.existOnList(UserServices.getUser().getAnswered(), idQuestion))
+                        this.getQuestion(database, parameters);
+                    else{
+                        this.getQuestionById(idQuestion, database).then(question => {
+                            resolve(this.prepareQuestion(question));
+                        });
+                    }
                 });
             }else{
                 // Busca aleatoriamente
                 let numberQuestion: number = this.aleatoryNumberQuestion();
-                this.getQuestionById(numberQuestion, database).then(question => {
-                    resolve(this.prepareQuestion(question));
-                });
+
+                // Se a pergunta já foi respondida anteriormente, busca uma nova pergunta
+                if (this.existOnList(UserServices.getUser().getAnswered(), numberQuestion))
+                    this.getQuestion(database, parameters);
+                else {
+                    this.getQuestionById(numberQuestion, database).then(question => {
+                        resolve(this.prepareQuestion(question));
+                    });
+                }
             }
         });
     }
