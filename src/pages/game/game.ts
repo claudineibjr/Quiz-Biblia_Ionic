@@ -33,6 +33,9 @@ export class GamePage {
 
   image: Array<String> = [];
 
+  HITS_HARD_POWERUP: number = Parameters.HITS_HARD_POWERUP;
+  HITS_POWERUP: number = Parameters.HITS_POWERUP;
+
   constructor(  public navCtrl: NavController, public database: AngularFireDatabase,
                 public alertCtrl: AlertController, public nativeAudio: NativeAudio,
                 public toastCtrl: ToastController, public navParams: NavParams,
@@ -93,6 +96,7 @@ export class GamePage {
     this.run_stopWatch = false;
 
     // Grava as alterações no usuário
+
     // Salva os bônus
     let newUserBonus: User.Bonus = UserServices.getUser().getBonus();
     newUserBonus.setAlternative(this.bonus_Alternative);
@@ -116,6 +120,8 @@ export class GamePage {
   }
 
   getStopWatchImage(): string{
+    // Retorna o caminho da imagem que deve ser exibida referente ao tempo restante para responder à questão
+
     if (this.time_Left_Question > 20)
       return 'assets/img/stopwatch/0-20.png';
     else

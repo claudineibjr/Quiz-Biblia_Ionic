@@ -26,6 +26,17 @@
 <ion-content padding style="background: linear-gradient(#2979FF, #0D47A1);">
 
   <!-- Container com o texto da questão-->
+  <figure id="containerInfo">
+    <img id="frameInfo" src="assets/img/quadro_questao.png"/>
+
+    <!-- Seção da bíblia referente à questão -->
+    <figcaption id="txtHitQuestion"><b>Acertos:</b> {{match.hit}} de {{HITS_POWERUP}}</figcaption>
+
+    <!-- Nível de dificuldade da questão -->
+    <figcaption id="txtHitHard"><b>Difíceis:</b> {{match.hit_Hard}} de {{HITS_HARD_POWERUP}}</figcaption>
+  </figure>
+
+  <!-- Container com o texto da questão-->
   <figure id="containerQuestion">
     <img id="frameQuestion" src="assets/img/quadro_questao.png"/>
     <figcaption id="txtQuestion"><b>{{question.getQuestion()}}</b></figcaption>

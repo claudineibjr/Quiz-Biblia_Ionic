@@ -87,8 +87,6 @@ export class ProfilePage {
             // Verifica se tem como fazer o login para verificar se a senha está correda
             UserServices.login(this.auth, UserServices.getUser().getEmail(), password).then((uid) => {
               
-              console.log('Senha correta');
-
               // Cria um novo usuário
               let user: User = new User(UserServices.getUser().getUid());
               user.setName(UserServices.getUser().getName());

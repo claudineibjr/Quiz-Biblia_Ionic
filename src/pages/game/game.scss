@@ -41,6 +41,41 @@ page-game {
     height: 32px;
 }
 
+
+/* TESTE */
+#containerInfo{
+    display: inline-block;
+    position: relative;
+    margin: 0px;
+    width: 100%;    
+}
+
+$frameInfoHeight: 25px;
+#frameInfo{
+    width: 100%;
+    height: $frameInfoHeight;
+}
+
+#txtHitQuestion, #txtHitHard{
+    position: absolute;
+    top: 0px;
+    color: black;
+    margin: 8px;
+    margin-top: 5px;
+    text-align: center;    
+    width: 100%;
+    padding-right: 5%;
+    font-size: 12px;
+}
+
+#txtHitQuestion{
+    text-align: left;
+}
+
+#txtHitHard{
+    text-align: right;
+}
+
 /* ---------------------------------------------------------------------- */
 /* Classes que servem para a criação dos quadro com a questão/alternativa */
 /* ---------------------------------------------------------------------- */
