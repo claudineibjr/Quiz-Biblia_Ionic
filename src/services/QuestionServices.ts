@@ -1,11 +1,10 @@
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
-import { AngularFireAuth } from 'angularfire2/auth';
+//import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import 'rxjs/add/operator/take';
 
 import { Question } from "../model/Question";
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+
 import { UserServices } from './UserServices';
 
 /*enum enumSections{
@@ -64,12 +63,10 @@ export class QuestionServices{
             if (parameters.length > 0){
                 // Busca o id da questão
                 let numberRootToBeSorted: number, idQuestion: number;
-                database.list('/question_filter/' + rootSearch)
-                .subscribe(questionsIdentifiers => {
+                database.list('/question_filter/' + rootSearch).valueChanges().subscribe(questionsIdentifiers => {
                     let sizeOfRoot: number = questionsIdentifiers.length;
                     numberRootToBeSorted = Math.floor(Math.random() * (sizeOfRoot - 1))
-                    idQuestion = questionsIdentifiers[numberRootToBeSorted].$value;
-                    
+                    idQuestion = questionsIdentifiers[numberRootToBeSorted] as number;
                     // Se a pergunta já foi respondida anteriormente, busca uma nova pergunta
                     if (this.existOnList(UserServices.getUser().getAnswered(), idQuestion))
                         this.getQuestion(database, parameters);
@@ -98,13 +95,11 @@ export class QuestionServices{
     private static getQuestionById(idQuestion: number, database: AngularFireDatabase): Promise<any>{
         return new Promise((resolve, reject) => {
             // Busca a questão selecionada no banco de dados
-            database.list('/question/', {
-                query: {
-                    orderByChild: 'idQuestion',
-                    equalTo: idQuestion,
-                    limitToFirst: 1
-                }
-            }).subscribe(questions => {
+            database.list('/question/', 
+                ref => ref.orderByChild("idQuestion").
+                            equalTo(idQuestion).
+                            limitToFirst(1)).
+            valueChanges().subscribe(questions => {
                 resolve(this.prepareQuestion(questions[0]));
             });
         })

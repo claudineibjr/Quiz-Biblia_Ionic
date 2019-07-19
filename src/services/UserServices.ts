@@ -1,7 +1,7 @@
-import { AngularFireDatabase, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import 'rxjs/add/operator/take';
+//import { take } from 'rxjs/operators'
 
 import { User } from "../model/User";
 
@@ -27,7 +27,7 @@ export class UserServices{
             firebaseAuthentication.auth.signInWithEmailAndPassword(email, password)
             .then((success => {
                 // Devolve o uid do usuário para que a camada anterior faça o login
-                resolve(success.uid);
+                resolve(success.user.uid);
             })).catch((error => {
                 switch(error.name){
                     case 'auth/invalid-email':  reject('O endereço de e-mail informado não é válido.'); break;
@@ -48,7 +48,7 @@ export class UserServices{
             auth.auth.createUserWithEmailAndPassword(email, password)
                 .then((success => {
                     // Pega o UID do usuário no Firebase e cria o usuário localmente
-                    let user: User = new User(success.uid);
+                    let user: User = new User(success.user.uid);
                     user.setName(name);
                     user.setEmail(email);
 
@@ -86,36 +86,35 @@ export class UserServices{
         return new Promise((resolve) => {
             this.user = new User(userUID);
 
-            db.object('/usuario/' + userUID, { preserveSnapshot: true }).take(1).subscribe(snapshots => {
-                snapshots.forEach(snapshot =>{
-                    switch(snapshot.key){
-                        case 'email': { this.user.setEmail(snapshot.val());  break;  }
-                        case 'name': { this.user.setName(snapshot.val());  break;  }
-                        case 'score': { this.user.setScore(snapshot.val());  break;  }
-                        case 'lastGame': { this.user.setLastGame(new Date(snapshot.val()));  break;  }
-                        case 'firstAccess': { this.user.setFirstAccess(new Date(snapshot.val()));  break;  }
-                        case 'bonus': { 
-                            let bonus: User.Bonus = new User.Bonus();
-                            bonus.setLastBonusReceived(new Date(snapshot.val().lastBonusReceived));
-                            bonus.setAlternative(snapshot.val().alternative);
-                            bonus.setBiblicalReference(snapshot.val().biblicalReference);
-                            bonus.setTime(snapshot.val().time);
-                            this.user.setBonus(bonus);
-                            break;
-                        }
-                        case 'preferences': { 
-                            let preferencias: User.Preferences = new User.Preferences();
-                            preferencias.setSound(snapshot.val().sound);
-                            preferencias.setVibration(snapshot.val().vibration);
-                            this.user.setPreferences(preferencias);
-                            break;
-                        }
-                        case 'answeredList': { this.user.setAnswered(snapshot.val());  break;  }
+            db.object('/usuario/' + userUID).valueChanges().subscribe(_snapshot => {
+                let snapshot: any = _snapshot;
+
+                switch(snapshot.key){
+                    case 'email': { this.user.setEmail(snapshot.val());  break;  }
+                    case 'name': { this.user.setName(snapshot.val());  break;  }
+                    case 'score': { this.user.setScore(snapshot.val());  break;  }
+                    case 'lastGame': { this.user.setLastGame(new Date(snapshot.val()));  break;  }
+                    case 'firstAccess': { this.user.setFirstAccess(new Date(snapshot.val()));  break;  }
+                    case 'bonus': { 
+                        let bonus: User.Bonus = new User.Bonus();
+                        bonus.setLastBonusReceived(new Date(snapshot.val().lastBonusReceived));
+                        bonus.setAlternative(snapshot.val().alternative);
+                        bonus.setBiblicalReference(snapshot.val().biblicalReference);
+                        bonus.setTime(snapshot.val().time);
+                        this.user.setBonus(bonus);
+                        break;
                     }
-                });
+                    case 'preferences': { 
+                        let preferencias: User.Preferences = new User.Preferences();
+                        preferencias.setSound(snapshot.val().sound);
+                        preferencias.setVibration(snapshot.val().vibration);
+                        this.user.setPreferences(preferencias);
+                        break;
+                    }
+                    case 'answeredList': { this.user.setAnswered(snapshot.val());  break;  }
+                }
 
                 resolve(this.user);
-
             });
         });
     }

@@ -11,11 +11,8 @@ import { ProfilePage } from '../profile/profile';
 import { GameParametersPage } from '../gameparameters/gameparameters';
 import { HelpPage } from '../help/help';
 
-import { User } from '../../model/User';
-
 import { UserServices } from '../../services/UserServices';
 import { Parameters } from '../../model/Parameters';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-main',
